@@ -28,7 +28,7 @@ function postToFormspree(payload) {
   return fetch(FORM_ENDPOINT, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(payload)
@@ -42,6 +42,33 @@ function leadSessionId() {
     localStorage.setItem('reasonlab_lead_session_id', id);
   }
   return id;
+}
+
+function bookingPath() {
+  // Relative path works on Netlify, GitHub Pages/project subfolders and local previews.
+  return 'book.html';
+}
+
+function normalizeWebsite(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  return `https://${raw}`;
+}
+
+function readAnalyzerData() {
+  return {
+    company: safeValue('bizname'),
+    website: safeValue('bizsite'),
+    industry: document.getElementById('industry')?.value || '',
+    challenge: document.getElementById('challenge')?.value || ''
+  };
+}
+
+function saveAnalyzerData() {
+  const data = readAnalyzerData();
+  localStorage.setItem('reasonlab_analyzer', JSON.stringify(data));
+  return data;
 }
 
 // ---------- Year ----------
@@ -92,13 +119,15 @@ if ('IntersectionObserver' in window && revealEls.length) {
   let width = 0;
   let height = 0;
   let points = [];
+  let animationId = null;
 
   function resize() {
     width = canvas.offsetWidth || window.innerWidth;
     height = canvas.offsetHeight || 720;
-    canvas.width = width * window.devicePixelRatio;
-    canvas.height = height * window.devicePixelRatio;
-    ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
     const count = Math.max(28, Math.floor(width / 42));
     points = Array.from({ length: count }, () => ({
@@ -144,12 +173,15 @@ if ('IntersectionObserver' in window && revealEls.length) {
     });
 
     ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
+    animationId = requestAnimationFrame(draw);
   }
 
   resize();
   draw();
   window.addEventListener('resize', resize);
+  window.addEventListener('beforeunload', () => {
+    if (animationId) cancelAnimationFrame(animationId);
+  });
 })();
 
 // ---------- FAQ ----------
@@ -167,17 +199,6 @@ $$('.faq-q').forEach(button => {
   if (!form) return;
 
   const result = document.getElementById('analyzerResult');
-
-  function saveAnalyzerData() {
-    const data = {
-      company: safeValue('bizname'),
-      website: safeValue('bizsite'),
-      industry: document.getElementById('industry')?.value || '',
-      challenge: document.getElementById('challenge')?.value || ''
-    };
-    localStorage.setItem('reasonlab_analyzer', JSON.stringify(data));
-    return data;
-  }
 
   ['bizname', 'bizsite', 'industry', 'challenge'].forEach(id => {
     const el = document.getElementById(id);
@@ -211,24 +232,39 @@ $$('.faq-q').forEach(button => {
           <small>Recommended first system</small>
           <p>An AI lead capture and follow-up system that responds instantly, qualifies prospects and sends every opportunity into one simple pipeline.</p>
         </div>
-        <a href="book.html" class="btn btn-primary analyzer-booking-link">Book a Strategy Call</a>
+        <a href="${bookingPath()}" data-book-link="true" class="btn btn-primary analyzer-booking-link">Book a Strategy Call</a>
       `;
     }
   });
-
-  document.addEventListener('click', (event) => {
-    const link = event.target.closest('a[href="book.html"]');
-    if (link) saveAnalyzerData();
-  });
 })();
+
+// ---------- Reliable Book CTA navigation ----------
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a[data-book-link="true"], a[href="/book.html"], a[href="book.html"]');
+  if (!link) return;
+
+  const onBookPage = document.body.classList.contains('book-page');
+  if (onBookPage) return;
+
+  event.preventDefault();
+  if (document.getElementById('analyzerForm')) saveAnalyzerData();
+  window.location.href = bookingPath();
+});
 
 // ---------- Autofill Booking from Analyzer ----------
 (function autofillBookingFromAnalyzer() {
+  const form = document.getElementById('bookingForm');
+  if (!form) return;
+
   const saved = localStorage.getItem('reasonlab_analyzer');
   if (!saved) return;
 
   let data;
-  try { data = JSON.parse(saved); } catch { return; }
+  try {
+    data = JSON.parse(saved);
+  } catch {
+    return;
+  }
 
   setValueIfEmpty('company', data.company);
   setValueIfEmpty('website', data.website);
@@ -244,8 +280,11 @@ $$('.faq-q').forEach(button => {
   const statusBox = document.getElementById('bookingStatus');
   const calSection = document.getElementById('calSection');
   const calFrame = document.getElementById('calFrame');
+  const sessionId = leadSessionId();
+  const partialKey = `reasonlab_partial_lead_sent_${sessionId}`;
 
-  let partialSent = localStorage.getItem('reasonlab_partial_lead_sent') === 'true';
+  let partialSent = localStorage.getItem(partialKey) === 'true';
+  let partialTimer = null;
 
   function getBookingData() {
     return {
@@ -257,27 +296,37 @@ $$('.faq-q').forEach(button => {
       industry: document.getElementById('industry')?.value || '',
       main_challenge: document.getElementById('challenge')?.value || '',
       notes: safeValue('notes'),
-      lead_session_id: leadSessionId(),
-      captured_from: window.location.href
+      lead_session_id: sessionId,
+      captured_from: window.location.href,
+      captured_at: new Date().toISOString()
     };
   }
 
   function updateCalFrame(data) {
     if (!calFrame) return;
 
+    const notes = [
+      data.phone ? `Phone: ${data.phone}` : '',
+      data.company ? `Company: ${data.company}` : '',
+      data.website ? `Website: ${normalizeWebsite(data.website)}` : '',
+      data.industry ? `Industry: ${data.industry}` : '',
+      data.main_challenge ? `Main challenge: ${data.main_challenge}` : '',
+      data.notes ? `Notes: ${data.notes}` : ''
+    ].filter(Boolean).join('\n');
+
     const params = new URLSearchParams({
       embed: 'true',
-      name: data.name || '',
-      email: data.email || '',
-      notes: [
-        data.phone ? `Phone: ${data.phone}` : '',
-        data.company ? `Company: ${data.company}` : '',
-        data.website ? `Website: ${data.website}` : '',
-        data.industry ? `Industry: ${data.industry}` : '',
-        data.main_challenge ? `Main challenge: ${data.main_challenge}` : '',
-        data.notes ? `Notes: ${data.notes}` : ''
-      ].filter(Boolean).join('\n')
+      name: data.name,
+      email: data.email,
+      notes
     });
+
+    // Extra custom keys are harmless if Cal.com ignores them, but useful if the event form supports them.
+    if (data.phone) params.set('phone', data.phone);
+    if (data.company) params.set('company', data.company);
+    if (data.website) params.set('website', normalizeWebsite(data.website));
+    if (data.industry) params.set('industry', data.industry);
+    if (data.main_challenge) params.set('challenge', data.main_challenge);
 
     calFrame.src = `${CAL_LINK}?${params.toString()}`;
   }
@@ -285,11 +334,10 @@ $$('.faq-q').forEach(button => {
   async function sendPartialLead() {
     if (partialSent) return;
     const data = getBookingData();
-
     if (!data.name || !isValidEmail(data.email)) return;
 
     partialSent = true;
-    localStorage.setItem('reasonlab_partial_lead_sent', 'true');
+    localStorage.setItem(partialKey, 'true');
 
     try {
       await postToFormspree({
@@ -302,9 +350,15 @@ $$('.faq-q').forEach(button => {
     }
   }
 
+  function schedulePartialLead() {
+    window.clearTimeout(partialTimer);
+    partialTimer = window.setTimeout(sendPartialLead, 700);
+  }
+
   ['name', 'email', 'phone'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
+    el.addEventListener('input', schedulePartialLead);
     el.addEventListener('blur', sendPartialLead);
     el.addEventListener('change', sendPartialLead);
   });
@@ -351,22 +405,3 @@ $$('.faq-q').forEach(button => {
     }
   });
 })();
-
-
-/* ===== FINAL: make every book CTA navigate reliably ===== */
-document.querySelectorAll('a[data-book-link="true"]').forEach((link)=>{
-  link.addEventListener('click',(e)=>{
-    e.preventDefault();
-    const saveBtnData = document.getElementById('analyzerForm');
-    if (saveBtnData) {
-      const data = {
-        company: document.getElementById('bizname')?.value?.trim() || '',
-        website: document.getElementById('bizsite')?.value?.trim() || '',
-        industry: document.getElementById('industry')?.value || '',
-        challenge: document.getElementById('challenge')?.value || ''
-      };
-      localStorage.setItem('reasonlab_analyzer', JSON.stringify(data));
-    }
-    window.location.assign('/book.html');
-  });
-});
