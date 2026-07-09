@@ -1,161 +1,353 @@
-document.getElementById('year').textContent = new Date().getFullYear();
+/* ==========================================================
+   ReasonLab Main JavaScript
+   Navigation, effects, analyzer, Formspree lead capture,
+   booking autofill and Cal.com reveal
+   ========================================================== */
 
+const FORM_ENDPOINT = 'https://formspree.io/f/xpqggeyq';
+const CAL_LINK = 'https://cal.com/reasonlab/strategy-call';
+
+// ---------- Helpers ----------
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
+}
+
+function safeValue(id) {
+  return document.getElementById(id)?.value?.trim() || '';
+}
+
+function setValueIfEmpty(id, value) {
+  const el = document.getElementById(id);
+  if (el && value && !el.value) el.value = value;
+}
+
+function postToFormspree(payload) {
+  return fetch(FORM_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+}
+
+function leadSessionId() {
+  let id = localStorage.getItem('reasonlab_lead_session_id');
+  if (!id) {
+    id = `reasonlab-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+    localStorage.setItem('reasonlab_lead_session_id', id);
+  }
+  return id;
+}
+
+// ---------- Year ----------
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// ---------- Mobile Navigation ----------
 const navToggle = document.getElementById('navToggle');
 const navlinks = document.getElementById('navlinks');
 
-navToggle.addEventListener('click', () => {
-  const isOpen = navlinks.classList.toggle('open');
-  navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-});
-
-navlinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navlinks.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
+if (navToggle && navlinks) {
+  navToggle.addEventListener('click', () => {
+    const open = navlinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
-});
 
-const reveals = document.querySelectorAll('.reveal:not(.in)');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('in');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.14 });
-reveals.forEach(el => revealObserver.observe(el));
-
-document.querySelectorAll('.faq-item').forEach(item => {
-  const q = item.querySelector('.faq-q');
-  const a = item.querySelector('.faq-a');
-  q.addEventListener('click', () => {
-    const open = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(o => {
-      o.classList.remove('open');
-      o.querySelector('.faq-a').style.maxHeight = null;
+  navlinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navlinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
     });
-    if (!open) {
-      item.classList.add('open');
-      a.style.maxHeight = a.scrollHeight + 'px';
-    }
   });
-});
+}
 
-const form = document.getElementById('analyzerForm');
-const resultBox = document.getElementById('analyzerResult');
+// ---------- Reveal on scroll ----------
+const revealEls = $$('.reveal');
+if ('IntersectionObserver' in window && revealEls.length) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('bizname').value.trim();
-  const site = document.getElementById('bizsite').value.trim();
-  const industry = document.getElementById('industry').value;
-  const challenge = document.getElementById('challenge').value;
+  revealEls.forEach(el => observer.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('in'));
+}
 
-  if (!name) {
-    resultBox.innerHTML = '<div style="color:#ff6b9d">&gt; Please enter a business name.</div>';
-    return;
-  }
-
-  const steps = [
-    `&gt; Connecting to ReasonLab Engine...`,
-    `&gt; Scanning ${name}${site ? ' (' + site + ')' : ''}...`,
-    `&gt; Checking lead capture...`,
-    `&gt; Detecting automation opportunities...`,
-    `&gt; Generating AI recommendations...`
-  ];
-
-  resultBox.innerHTML = '';
-  steps.forEach((text, i) => {
-    setTimeout(() => {
-      const line = document.createElement('div');
-      line.textContent = text;
-      resultBox.appendChild(line);
-    }, i * 420);
-  });
-
-  setTimeout(() => {
-    const hours = challenge === 'Manual work' ? 22 : 16;
-    const system = challenge === 'Customer follow-up' ? 'AI Follow-up Agent' : challenge === 'Operations visibility' ? 'Business Dashboard' : 'AI Lead Capture + CRM Automation';
-    resultBox.innerHTML += `
-      <div class="audit-card">
-        <strong style="color:#fff">AI Audit Report</strong>
-        <div class="audit-grid">
-          <div class="audit-metric"><small>Lead Capture</small><strong>Needs Improvement</strong></div>
-          <div class="audit-metric"><small>Automation Potential</small><strong>High</strong></div>
-          <div class="audit-metric"><small>Time Saved</small><strong>≈ ${hours} hrs/week</strong></div>
-          <div class="audit-metric"><small>First Build</small><strong>${system}</strong></div>
-        </div>
-        <p style="margin-top:14px;font-size:13.5px">Based on your inputs${industry ? ' in ' + industry : ''}, we would start by building a system that captures inquiries, qualifies leads and triggers follow-up automatically.</p>
-        <a href="#contact" class="btn btn-primary" style="margin-top:16px;width:100%">Book a Strategy Call</a>
-      </div>
-    `;
-  }, steps.length * 420 + 350);
-});
-
-(function(){
+// ---------- Background nodes canvas ----------
+(function initNodeCanvas() {
   const canvas = document.getElementById('node-canvas');
   if (!canvas) return;
+
   const ctx = canvas.getContext('2d');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let w, h, nodes, frame;
+  let width = 0;
+  let height = 0;
+  let points = [];
 
-  function resize(){
-    w = canvas.width = canvas.offsetWidth * devicePixelRatio;
-    h = canvas.height = canvas.offsetHeight * devicePixelRatio;
-  }
+  function resize() {
+    width = canvas.offsetWidth || window.innerWidth;
+    height = canvas.offsetHeight || 720;
+    canvas.width = width * window.devicePixelRatio;
+    canvas.height = height * window.devicePixelRatio;
+    ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
 
-  function init(){
-    resize();
-    const count = window.innerWidth < 760 ? 24 : 48;
-    nodes = Array.from({length: count}, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.22 * devicePixelRatio,
-      vy: (Math.random() - 0.5) * 0.22 * devicePixelRatio,
-      r: Math.random() * 1.4 + 0.8
+    const count = Math.max(28, Math.floor(width / 42));
+    points = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      r: Math.random() * 1.8 + 1,
+      c: ['#7029A1', '#D21767', '#FF690D', '#00B6DD'][Math.floor(Math.random() * 4)]
     }));
   }
 
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    const linkDist = 145 * devicePixelRatio;
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
 
-    nodes.forEach(n => {
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > w) n.vx *= -1;
-      if (n.y < 0 || n.y > h) n.vy *= -1;
-    });
+    points.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > width) p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
 
-    for (let i=0;i<nodes.length;i++){
-      for (let j=i+1;j<nodes.length;j++){
-        const a=nodes[i], b=nodes[j];
-        const dx=a.x-b.x, dy=a.y-b.y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<linkDist){
-          ctx.strokeStyle = `rgba(122,148,154,${(1-dist/linkDist)*0.32})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.c;
+      ctx.globalAlpha = 0.75;
+      ctx.fill();
+
+      for (let j = i + 1; j < points.length; j++) {
+        const q = points[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = 'rgba(245,245,247,.08)';
+          ctx.globalAlpha = 1 - d / 130;
           ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+          ctx.stroke();
         }
       }
-    }
-
-    const colors = ['#7029A1','#D21767','#00b6dd','#FF690D'];
-    nodes.forEach((n,i)=>{
-      ctx.fillStyle = colors[i % colors.length];
-      ctx.globalAlpha = .82;
-      ctx.beginPath(); ctx.arc(n.x,n.y,n.r*devicePixelRatio,0,Math.PI*2); ctx.fill();
-      ctx.globalAlpha = 1;
     });
-    frame = requestAnimationFrame(draw);
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
   }
 
-  init();
+  resize();
   draw();
-  if (reduceMotion) cancelAnimationFrame(frame);
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(frame);
-    init();
-    if (!reduceMotion) draw();
+  window.addEventListener('resize', resize);
+})();
+
+// ---------- FAQ ----------
+$$('.faq-q').forEach(button => {
+  button.addEventListener('click', () => {
+    const item = button.closest('.faq-item');
+    if (!item) return;
+    item.classList.toggle('open');
+  });
+});
+
+// ---------- Business Analyzer ----------
+(function initAnalyzer() {
+  const form = document.getElementById('analyzerForm');
+  if (!form) return;
+
+  const result = document.getElementById('analyzerResult');
+
+  function saveAnalyzerData() {
+    const data = {
+      company: safeValue('bizname'),
+      website: safeValue('bizsite'),
+      industry: document.getElementById('industry')?.value || '',
+      challenge: document.getElementById('challenge')?.value || ''
+    };
+    localStorage.setItem('reasonlab_analyzer', JSON.stringify(data));
+    return data;
+  }
+
+  ['bizname', 'bizsite', 'industry', 'challenge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', saveAnalyzerData);
+    el.addEventListener('change', saveAnalyzerData);
+  });
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = saveAnalyzerData();
+
+    if (result) {
+      result.classList.add('show');
+      result.innerHTML = `
+        <div class="terminal-head"><span></span><span></span><span></span><strong>business-analyzer.exe</strong></div>
+        <div class="terminal-lines">
+          <p>&gt; Connecting to ReasonLab scan engine...</p>
+          <p>&gt; Reading business profile: ${data.company || 'Unknown business'}</p>
+          <p>&gt; Checking website: ${data.website || 'No website provided'}</p>
+          <p>&gt; Looking for missed lead opportunities...</p>
+          <p>&gt; Building recommended system map...</p>
+        </div>
+        <div class="result-grid">
+          <div><small>Lead Capture</small><strong>Needs Work</strong></div>
+          <div><small>Automation Score</small><strong>71%</strong></div>
+          <div><small>AI Agent Fit</small><strong>High</strong></div>
+          <div><small>First Build</small><strong>CRM + AI</strong></div>
+        </div>
+        <div class="recommendation-card blue">
+          <small>Recommended first system</small>
+          <p>An AI lead capture and follow-up system that responds instantly, qualifies prospects and sends every opportunity into one simple pipeline.</p>
+        </div>
+        <a href="book.html" class="btn btn-primary analyzer-booking-link">Book a Strategy Call</a>
+      `;
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href="book.html"]');
+    if (link) saveAnalyzerData();
+  });
+})();
+
+// ---------- Autofill Booking from Analyzer ----------
+(function autofillBookingFromAnalyzer() {
+  const saved = localStorage.getItem('reasonlab_analyzer');
+  if (!saved) return;
+
+  let data;
+  try { data = JSON.parse(saved); } catch { return; }
+
+  setValueIfEmpty('company', data.company);
+  setValueIfEmpty('website', data.website);
+  setValueIfEmpty('industry', data.industry);
+  setValueIfEmpty('challenge', data.challenge);
+})();
+
+// ---------- Booking Page: Formspree + Cal.com ----------
+(function initBookingPage() {
+  const form = document.getElementById('bookingForm');
+  if (!form) return;
+
+  const statusBox = document.getElementById('bookingStatus');
+  const calSection = document.getElementById('calSection');
+  const calFrame = document.getElementById('calFrame');
+
+  let partialSent = localStorage.getItem('reasonlab_partial_lead_sent') === 'true';
+
+  function getBookingData() {
+    return {
+      name: safeValue('name'),
+      email: safeValue('email'),
+      phone: safeValue('phone'),
+      company: safeValue('company'),
+      website: safeValue('website'),
+      industry: document.getElementById('industry')?.value || '',
+      main_challenge: document.getElementById('challenge')?.value || '',
+      notes: safeValue('notes'),
+      lead_session_id: leadSessionId(),
+      captured_from: window.location.href
+    };
+  }
+
+  function updateCalFrame(data) {
+    if (!calFrame) return;
+
+    const params = new URLSearchParams({
+      embed: 'true',
+      name: data.name || '',
+      email: data.email || '',
+      notes: [
+        data.phone ? `Phone: ${data.phone}` : '',
+        data.company ? `Company: ${data.company}` : '',
+        data.website ? `Website: ${data.website}` : '',
+        data.industry ? `Industry: ${data.industry}` : '',
+        data.main_challenge ? `Main challenge: ${data.main_challenge}` : '',
+        data.notes ? `Notes: ${data.notes}` : ''
+      ].filter(Boolean).join('\n')
+    });
+
+    calFrame.src = `${CAL_LINK}?${params.toString()}`;
+  }
+
+  async function sendPartialLead() {
+    if (partialSent) return;
+    const data = getBookingData();
+
+    if (!data.name || !isValidEmail(data.email)) return;
+
+    partialSent = true;
+    localStorage.setItem('reasonlab_partial_lead_sent', 'true');
+
+    try {
+      await postToFormspree({
+        _subject: 'ReasonLab partial lead',
+        lead_status: 'partial_lead',
+        ...data
+      });
+    } catch (error) {
+      console.warn('Partial lead failed:', error);
+    }
+  }
+
+  ['name', 'email', 'phone'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('blur', sendPartialLead);
+    el.addEventListener('change', sendPartialLead);
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = getBookingData();
+
+    if (!data.name || !isValidEmail(data.email)) {
+      if (statusBox) {
+        statusBox.classList.add('show', 'error');
+        statusBox.textContent = 'Please enter your name and a valid email before continuing.';
+      }
+      return;
+    }
+
+    if (statusBox) {
+      statusBox.classList.remove('error');
+      statusBox.classList.add('show');
+      statusBox.textContent = 'Saving your request and opening real calendar availability...';
+    }
+
+    try {
+      await postToFormspree({
+        _subject: 'ReasonLab booking lead',
+        lead_status: 'booking_started',
+        ...data
+      });
+    } catch (error) {
+      console.warn('Full lead failed:', error);
+    }
+
+    updateCalFrame(data);
+
+    if (calSection) {
+      calSection.classList.add('show');
+      setTimeout(() => {
+        calSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+    }
+
+    if (statusBox) {
+      statusBox.textContent = 'Great — now select an available time below.';
+    }
   });
 })();

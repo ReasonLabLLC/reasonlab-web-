@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book a Strategy Call — ReasonLab</title>
-  <meta name="description" content="Book a free AI strategy call with ReasonLab." />
+  <meta name="description" content="Book a free AI growth strategy session with ReasonLab." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,225 +12,19 @@
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="stylesheet" href="css/style.css" />
 
-  <style>
-    .booking-shell{
-      min-height:100vh;
-      padding:150px 0 90px;
-      position:relative;
-      overflow:hidden;
-      border-bottom:1px solid var(--line);
-      background:
-        radial-gradient(circle at 50% 8%, rgba(112,41,161,.24), transparent 36%),
-        radial-gradient(circle at 70% 42%, rgba(0,182,221,.08), transparent 32%),
-        var(--bg);
-    }
-
-    .booking-shell::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size:42px 42px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.72), transparent 82%);
-      pointer-events:none;
-    }
-
-    .booking-layout{
-      position:relative;
-      z-index:2;
-      display:grid;
-      grid-template-columns:.92fr 1.08fr;
-      gap:52px;
-      align-items:center;
-    }
-
-    .booking-copy h1{
-      font-size:clamp(42px,5.4vw,72px);
-      line-height:1.02;
-      letter-spacing:-.055em;
-      margin:0 0 22px;
-    }
-
-    .booking-copy h1 span{
-      background:var(--grad);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-
-    .booking-copy .lead{
-      font-size:17px;
-      max-width:560px;
-      color:#b6bec5;
-      margin-bottom:32px;
-    }
-
-    .booking-points{
-      display:grid;
-      gap:14px;
-      margin:32px 0;
-    }
-
-    .booking-point{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      color:#dfe7ea;
-      font-size:14px;
-    }
-
-    .booking-point span{
-      width:22px;
-      height:22px;
-      border-radius:999px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      flex:none;
-      font-family:'JetBrains Mono',monospace;
-      font-size:12px;
-      color:#00e08a;
-      background:rgba(0,224,138,.08);
-      border:1px solid rgba(0,224,138,.24);
-    }
-
-    .booking-details{
-      max-width:455px;
-      margin-top:32px;
-      background:rgba(19,18,32,.66);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:22px;
-      box-shadow:0 24px 80px -58px rgba(0,0,0,.95);
-    }
-
-    .booking-details-row{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      padding:11px 0;
-      border-bottom:1px solid var(--line);
-      font-family:'JetBrains Mono',monospace;
-      font-size:12px;
-      color:var(--slate);
-    }
-
-    .booking-details-row:last-child{border-bottom:none;}
-    .booking-details-row strong{color:#fff;font-family:'Montserrat',sans-serif;}
-
-    .booking-card{
-      background:linear-gradient(180deg, rgba(19,18,32,.94), rgba(12,11,20,.94));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:36px;
-      position:relative;
-      overflow:hidden;
-      box-shadow:0 42px 120px -76px rgba(0,0,0,.95);
-    }
-
-    .booking-card::before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      background:
-        radial-gradient(circle at 8% 0%, rgba(210,23,103,.18), transparent 32%),
-        radial-gradient(circle at 100% 100%, rgba(0,182,221,.12), transparent 34%);
-      pointer-events:none;
-    }
-
-    .booking-card > *{position:relative;z-index:1;}
-    .booking-card h2{font-size:30px;margin-bottom:8px;}
-    .booking-card .card-subtitle{font-size:14px;color:#9fa9b2;margin-bottom:28px;}
-
-    .booking-form{display:grid;gap:18px;}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-
-    .field label{
-      display:block;
-      margin-bottom:8px;
-      font-family:'JetBrains Mono',monospace;
-      font-size:11px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:#8a9aa1;
-    }
-
-    .field input,
-    .field select,
-    .field textarea{
-      width:100%;
-      background:#0b0a12;
-      color:#fff;
-      border:1px solid rgba(245,245,247,.1);
-      border-radius:12px;
-      padding:14px 15px;
-      font-family:'Montserrat',sans-serif;
-      font-size:14px;
-      outline:none;
-      transition:border-color .2s ease, box-shadow .2s ease;
-    }
-
-    .field textarea{min-height:108px;resize:vertical;}
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus{
-      border-color:rgba(0,182,221,.62);
-      box-shadow:0 0 0 3px rgba(0,182,221,.08);
-    }
-
-    .slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-
-    .slot{
-      border:1px solid rgba(245,245,247,.1);
-      background:rgba(255,255,255,.025);
-      color:#dfe7ea;
-      padding:13px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-family:'JetBrains Mono',monospace;
-      font-size:12px;
-      transition:transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .slot:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.25);}
-    .slot.selected{border-color:rgba(210,23,103,.72);background:linear-gradient(120deg, rgba(112,41,161,.42), rgba(210,23,103,.26), rgba(255,105,13,.16));color:#fff;}
-
-    .time-select-wrap{display:grid;gap:8px;}
-    .availability-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);line-height:1.55;}
-
-    .booking-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:6px;}
-    .booking-actions .btn-primary{min-width:210px;}
-    .booking-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);line-height:1.6;}
-
-    .booking-status{
-      display:none;
-      margin-top:18px;
-      border:1px solid rgba(0,182,221,.22);
-      background:rgba(0,182,221,.075);
-      color:#dff9ff;
-      border-radius:14px;
-      padding:16px;
-      font-size:13px;
-      line-height:1.6;
-    }
-    .booking-status.show{display:block;}
-
-    @media(max-width:960px){
-      .booking-layout{grid-template-columns:1fr;gap:36px;}
-    }
-
-    @media(max-width:680px){
-      .booking-shell{padding:122px 0 64px;}
-      .booking-card{padding:24px;border-radius:20px;}
-      .form-grid,.slot-grid{grid-template-columns:1fr;}
-      .booking-actions .btn-primary{width:100%;}
-    }
-  </style>
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;
+      t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "xjv2f4d7xg");
+  </script>
 </head>
-<body>
+
+<body class="book-page">
   <header class="site-header">
     <nav class="wrap nav">
       <a href="index.html#top" class="brand" aria-label="ReasonLab home">
@@ -255,61 +49,128 @@
   </header>
 
   <main>
-    <section class="booking-shell">
-      <div class="wrap booking-layout">
-        <div class="booking-copy reveal in">
+    <section class="book-hero">
+      <canvas id="node-canvas"></canvas>
+      <div class="book-grid-bg"></div>
+
+      <div class="wrap book-layout">
+        <div class="book-copy reveal in">
           <div class="eyebrow">Free strategy session</div>
-          <h1>Book your <span>AI strategy call.</span></h1>
+          <h1>Book your <span class="accent">AI strategy call.</span></h1>
           <p class="lead">In 30 minutes, we’ll review your business, identify automation opportunities and map the first intelligent system ReasonLab would build for you.</p>
 
-          <div class="booking-points">
-            <div class="booking-point"><span>✓</span><p>We review your website, lead flow and current operations.</p></div>
-            <div class="booking-point"><span>✓</span><p>You get a clear first-build recommendation, not vague AI ideas.</p></div>
-            <div class="booking-point"><span>✓</span><p>No pressure. The goal is to find the highest-leverage opportunity.</p></div>
+          <div class="book-points">
+            <div class="book-point"><span>✓</span><p>We review your website, lead flow and current operations.</p></div>
+            <div class="book-point"><span>✓</span><p>You get a clear first-build recommendation, not vague AI ideas.</p></div>
+            <div class="book-point"><span>✓</span><p>No pressure. The goal is to find the highest-leverage opportunity.</p></div>
           </div>
 
-          <div class="booking-details">
-            <div class="booking-details-row"><span>Duration</span><strong>30 minutes</strong></div>
-            <div class="booking-details-row"><span>Location</span><strong>Google Meet / Phone</strong></div>
-            <div class="booking-details-row"><span>Cost</span><strong>Free</strong></div>
-            <div class="booking-details-row"><span>Outcome</span><strong>Automation roadmap</strong></div>
+          <div class="book-mini-card">
+            <div class="mini-row"><span>Duration</span><strong>30 minutes</strong></div>
+            <div class="mini-row"><span>Location</span><strong>Google Meet</strong></div>
+            <div class="mini-row"><span>Cost</span><strong>Free</strong></div>
+            <div class="mini-row"><span>Outcome</span><strong>Automation roadmap</strong></div>
           </div>
         </div>
 
-        <div class="booking-card reveal in">
-          <h2>Request a strategy call</h2>
-          <p class="card-subtitle">Choose a preferred time and send your request. We’ll confirm availability and send the meeting details.</p>
-
-          <form class="booking-form" id="bookingForm">
-            <div class="form-grid">
-              <div class="field"><label for="name">Name</label><input id="name" type="text" placeholder="Your name" required /></div>
-              <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@company.com" required /></div>
-              <div class="field"><label for="phone">Phone Number</label><input id="phone" type="tel" placeholder="(407) 000-0000" /></div>
-              <div class="field"><label for="company">Company</label><input id="company" type="text" placeholder="Company name" /></div>
-              <div class="field"><label for="website">Website</label><input id="website" type="text" placeholder="company.com" /></div>
-              <div class="field"><label for="industry">Industry</label><select id="industry"><option value="">Select industry</option><option>Home Services</option><option>Medical / Clinic</option><option>Law Firm</option><option>Restaurant</option><option>Real Estate</option><option>Other</option></select></div>
-              <div class="field"><label for="challenge">Main Challenge</label><select id="challenge"><option value="">Select challenge</option><option>Getting more leads</option><option>Responding faster</option><option>Too much manual work</option><option>Following up consistently</option><option>Organizing customers</option></select></div>
+        <div class="book-card reveal in">
+          <div class="book-card-top">
+            <div>
+              <div class="eyebrow compact">Step 1</div>
+              <h2>Tell us about your business</h2>
             </div>
+            <span class="book-status-pill">lead capture</span>
+          </div>
 
-            <div class="field">
-              <label for="preferredTime">Select Time</label>
-              <div class="time-select-wrap">
-                <select id="preferredTime" name="preferred_time" required>
-                  <option value="">Loading available times...</option>
-                </select>
-                <span class="availability-hint">Available times are shown from the next open slots. ReasonLab will confirm the final meeting details.</span>
+          <p class="book-card-subtitle">Start with your contact details. Then we’ll show real calendar availability powered by Cal.com.</p>
+
+          <form class="book-form" id="bookingForm" autocomplete="on">
+            <div class="book-form-grid">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" required />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@company.com" required />
               </div>
             </div>
 
-            <div class="field"><label for="notes">Anything we should know?</label><textarea id="notes" placeholder="Tell us what you want to automate, fix or grow."></textarea></div>
+            <div class="book-form-grid">
+              <div class="field">
+                <label for="phone">Phone Number</label>
+                <input id="phone" name="phone" type="tel" placeholder="(407) 000-0000" />
+              </div>
 
-            <div class="booking-actions">
-              <button class="btn btn-primary" type="submit">Request Strategy Call</button>
-              <span class="booking-note">By entering your contact details, you agree that ReasonLab may use them to follow up about your request. A partial lead is saved once when name and email are entered.</span>
+              <div class="field">
+                <label for="company">Company</label>
+                <input id="company" name="company" type="text" placeholder="Company name" required />
+              </div>
             </div>
 
+            <div class="book-form-grid">
+              <div class="field">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" placeholder="company.com" />
+              </div>
+
+              <div class="field">
+                <label for="industry">Industry</label>
+                <select id="industry" name="industry" required>
+                  <option value="">Select industry</option>
+                  <option>Home Services</option>
+                  <option>Medical / Clinic</option>
+                  <option>Law Firm</option>
+                  <option>Restaurant</option>
+                  <option>Real Estate</option>
+                  <option>E-commerce</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="challenge">Main Challenge</label>
+              <select id="challenge" name="challenge" required>
+                <option value="">Select challenge</option>
+                <option>Getting more leads</option>
+                <option>Responding faster</option>
+                <option>Too much manual work</option>
+                <option>Organizing customers</option>
+                <option>Following up consistently</option>
+                <option>Building a custom system</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="notes">Anything We Should Know?</label>
+              <textarea id="notes" name="notes" placeholder="Tell us what you want to automate, fix or grow."></textarea>
+            </div>
+
+            <button class="btn btn-primary book-submit" type="submit">Continue to Calendar</button>
+            <p class="book-note">By entering your contact details, you agree that ReasonLab may use them to follow up about your request.</p>
             <div class="booking-status" id="bookingStatus"></div>
           </form>
+        </div>
+      </div>
+
+      <div class="wrap cal-section" id="calSection" aria-live="polite">
+        <div class="cal-section-head">
+          <div class="eyebrow">Step 2 · Real availability</div>
+          <h2>Select a time that works for you</h2>
+          <p>Choose an available time below. Once booked, Cal.com will block the time automatically and create the calendar meeting.</p>
+        </div>
+
+        <div class="cal-embed-wrap">
+          <iframe
+            id="calFrame"
+            src="https://cal.com/reasonlab/strategy-call?embed=true"
+            width="100%"
+            height="760"
+            frameborder="0"
+            title="Book a ReasonLab strategy call">
+          </iframe>
         </div>
       </div>
     </section>
@@ -326,184 +187,6 @@
     </div>
   </footer>
 
-  <script>
-    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqggeyq';
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    const navToggle = document.getElementById('navToggle');
-    const navlinks = document.getElementById('navlinks');
-    if (navToggle && navlinks) {
-      navToggle.addEventListener('click', () => {
-        const isOpen = navlinks.classList.toggle('open');
-        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
-    }
-
-    const preferredTimeSelect = document.getElementById('preferredTime');
-    let selectedSlot = '';
-
-    const availabilityTemplate = [
-      { dayOffset: 0, times: ['3:00 PM', '5:00 PM'] },
-      { dayOffset: 1, times: ['10:00 AM', '1:00 PM'] },
-      { dayOffset: 2, times: ['11:00 AM', '4:00 PM'] },
-      { dayOffset: 3, times: ['10:00 AM', '2:00 PM'] },
-      { dayOffset: 4, times: ['11:00 AM', '3:00 PM'] }
-    ];
-
-    function formatAvailabilityDate(date) {
-      const today = new Date();
-      const tomorrow = new Date();
-      tomorrow.setDate(today.getDate() + 1);
-
-      const sameDay = (a, b) =>
-        a.getFullYear() === b.getFullYear() &&
-        a.getMonth() === b.getMonth() &&
-        a.getDate() === b.getDate();
-
-      if (sameDay(date, today)) return 'Today';
-      if (sameDay(date, tomorrow)) return 'Tomorrow';
-
-      return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-    }
-
-    function buildAvailableTimes() {
-      if (!preferredTimeSelect) return;
-
-      const now = new Date();
-      preferredTimeSelect.innerHTML = '<option value="">Select an available time</option>';
-
-      availabilityTemplate.forEach(day => {
-        const date = new Date();
-        date.setDate(now.getDate() + day.dayOffset);
-
-        const group = document.createElement('optgroup');
-        group.label = formatAvailabilityDate(date);
-
-        day.times.forEach(time => {
-          const option = document.createElement('option');
-          const label = `${formatAvailabilityDate(date)} · ${time}`;
-          option.value = label;
-          option.textContent = label;
-          group.appendChild(option);
-        });
-
-        preferredTimeSelect.appendChild(group);
-      });
-    }
-
-    buildAvailableTimes();
-
-    if (preferredTimeSelect) {
-      preferredTimeSelect.addEventListener('change', () => {
-        selectedSlot = preferredTimeSelect.value;
-        schedulePartialLeadCapture();
-      });
-    }
-
-    const bookingForm = document.getElementById('bookingForm');
-    const statusBox = document.getElementById('bookingStatus');
-    const leadSessionId = `reasonlab-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    let partialAlreadySent = false;
-    let partialTimer;
-
-    function getBookingData(status = 'partial_lead') {
-      return {
-        _subject: status === 'completed_booking'
-          ? 'ReasonLab booking request'
-          : 'ReasonLab partial lead captured',
-        lead_status: status,
-        lead_session_id: leadSessionId,
-        captured_from: 'reasonlab.co/book.html',
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        company: document.getElementById('company').value.trim(),
-        website: document.getElementById('website').value.trim(),
-        industry: document.getElementById('industry').value,
-        main_challenge: document.getElementById('challenge').value,
-        preferred_time: selectedSlot,
-        notes: document.getElementById('notes').value.trim()
-      };
-    }
-
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    async function sendToFormspree(data) {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (!response.ok) {
-        throw new Error('Formspree submission failed');
-      }
-
-      return response.json();
-    }
-
-    function schedulePartialLeadCapture() {
-      clearTimeout(partialTimer);
-      partialTimer = setTimeout(async () => {
-        const data = getBookingData('partial_lead');
-
-        if (!data.name || !isValidEmail(data.email)) return;
-
-        if (partialAlreadySent) return;
-        partialAlreadySent = true;
-
-        try {
-          await sendToFormspree(data);
-        } catch (error) {
-          partialAlreadySent = false;
-          console.warn('Partial lead capture failed:', error);
-        }
-      }, 1200);
-    }
-
-    ['name', 'email', 'phone', 'company', 'website', 'industry', 'challenge', 'preferredTime', 'notes'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('input', schedulePartialLeadCapture);
-        el.addEventListener('change', schedulePartialLeadCapture);
-      }
-    });
-
-    bookingForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = getBookingData('completed_booking');
-
-      if (!data.name || !isValidEmail(data.email)) {
-        statusBox.classList.add('show');
-        statusBox.textContent = 'Please enter a valid name and email.';
-        return;
-      }
-
-      if (!selectedSlot) {
-        statusBox.classList.add('show');
-        statusBox.textContent = 'Please select a preferred time before sending your request.';
-        return;
-      }
-
-      statusBox.classList.add('show');
-      statusBox.textContent = 'Sending your request...';
-
-      try {
-        await sendToFormspree(data);
-        statusBox.textContent = 'Request sent. ReasonLab will follow up with the meeting details.';
-        bookingForm.reset();
-        selectedSlot = '';
-        if (preferredTimeSelect) preferredTimeSelect.value = '';
-      } catch (error) {
-        statusBox.textContent = 'Something went wrong. Please try again or message us on WhatsApp.';
-      }
-    });
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>
