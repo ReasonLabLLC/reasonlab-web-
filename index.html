@@ -1,307 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ReasonLab — Intelligent systems for growing businesses</title>
-<meta name="description" content="ReasonLab designs and builds intelligent systems — AI automation, custom software, websites and AI agents — that help businesses grow.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReasonLab — AI systems for growing businesses</title>
+  <meta name="description" content="ReasonLab builds AI automation, custom software and intelligent business systems that help companies capture leads, automate operations and grow." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <header class="site-header">
+    <nav class="wrap nav">
+      <a href="#top" class="brand" aria-label="ReasonLab home">
+        <span class="brand-mark"><img src="assets/logo-icon.png" alt="" /></span>
+        <span class="brand-text">ReasonLab</span>
+      </a>
 
-<header>
-  <nav class="wrap">
-    <a href="#top" class="logo"><img src="assets/logo-icon.png" alt="ReasonLab" class="mark">ReasonLab</a>
-    <div class="navlinks" id="navlinks">
-      <a href="#services">Services</a>
-      <a href="#process">How we work</a>
-      <a href="#work">Systems</a>
-      <a href="#analyzer">Analyzer</a>
-      <a href="#faq">FAQ</a>
-    </div>
-    <div class="navcta">
-      <a href="tel:+14078832840" class="btn btn-ghost">407.883.2840</a>
-      <a href="#contact" class="btn btn-primary">Book a Call</a>
-      <button class="navToggle" id="navToggle" aria-label="Toggle menu">☰</button>
-    </div>
-  </nav>
-</header>
-
-<main id="top">
-
-  <!-- HERO -->
-  <section class="hero" style="border-bottom:1px solid var(--line);">
-    <canvas id="node-canvas"></canvas>
-    <div class="wrap hero-inner">
-      <div class="eyebrow">ReasonLab LLC · AI Engineering</div>
-      <h1>We build <span class="accent">intelligent systems</span> that help businesses grow.</h1>
-      <p class="lead">Not another agency. We design and ship the AI automation, software and agents that turn your operations into a growth engine.</p>
-      <p class="stack"><b>AI Automation</b> · <b>Custom Software</b> · <b>Websites</b> · <b>AI Agents</b></p>
-      <div class="hero-ctas">
-        <a href="#contact" class="btn btn-primary">Book a Strategy Call</a>
-        <a href="#work" class="btn btn-ghost">Explore Systems</a>
+      <div class="navlinks" id="navlinks">
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#systems">Systems</a>
+        <a href="#analyzer">Analyzer</a>
+        <a href="#faq">FAQ</a>
       </div>
-    </div>
-  </section>
 
-  <!-- RESULTS -->
-  <section id="services">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">What we deliver</div>
-        <h2>We don't sell services. We sell results.</h2>
+      <div class="nav-actions">
+        <a href="#analyzer" class="btn btn-ghost nav-audit">Business Analyzer</a>
+        <a href="#contact" class="btn btn-primary">Book a Call</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
       </div>
-      <div class="results-grid">
-        <div class="result-card reveal">
-          <div class="ico">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <canvas id="node-canvas"></canvas>
+      <div class="hero-grid-bg"></div>
+
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal in">
+          <div class="eyebrow">ReasonLab LLC · AI Engineering</div>
+          <h1>Your next employee <span class="accent">isn’t human.</span></h1>
+          <p class="lead">We build AI systems that answer every lead, automate operations and scale your revenue — without hiring more staff.</p>
+          <p class="stack"><b>AI Automation</b> · <b>Custom Software</b> · <b>AI Agents</b> · <b>Business Systems</b></p>
+          <div class="hero-ctas">
+            <a href="#contact" class="btn btn-primary">Book a Strategy Call</a>
+            <a href="#analyzer" class="btn btn-ghost">Try Business Analyzer</a>
           </div>
-          <h3>Capture more leads</h3>
-          <p>We build websites and funnels that turn visitors into customers, not just page views.</p>
         </div>
-        <div class="result-card reveal">
-          <div class="ico">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-          </div>
-          <h3>Save hours every week</h3>
-          <p>We automate the repetitive work so your team can focus on selling and serving customers.</p>
-        </div>
-        <div class="result-card reveal">
-          <div class="ico">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <h3>Never miss another customer</h3>
-          <p>AI agents respond, qualify and follow up with every lead, 24 hours a day.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- PROCESS -->
-  <section id="process">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">How we work</div>
-        <h2>Five steps. Nothing extra.</h2>
-      </div>
-      <div class="process reveal">
-        <div class="step"><div class="n">01</div><h3>Discover</h3><p>We map your operations and find where growth is being lost.</p></div>
-        <div class="step"><div class="n">02</div><h3>Analyze</h3><p>We identify the highest-leverage systems to build first.</p></div>
-        <div class="step"><div class="n">03</div><h3>Build</h3><p>We design and ship the software, site or agent — fast.</p></div>
-        <div class="step"><div class="n">04</div><h3>Automate</h3><p>We connect the pieces so the system runs without you.</p></div>
-        <div class="step"><div class="n">05</div><h3>Scale</h3><p>We measure results and expand what's working.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- USE CASES -->
-  <section id="use-cases">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">Built for your industry</div>
-        <h2>Every business runs differently. Our systems adapt.</h2>
-      </div>
-      <div class="cases-grid">
-        <div class="case-card reveal">
-          <div class="tag">Roofing</div>
-          <h3>Roofing</h3>
-          <p>Instant estimate requests and storm-response follow-ups that book jobs while crews are still on-site.</p>
-        </div>
-        <div class="case-card reveal">
-          <div class="tag">Medical</div>
-          <h3>Medical</h3>
-          <p>Appointment scheduling and patient intake agents that cut no-shows and front-desk load.</p>
-        </div>
-        <div class="case-card reveal">
-          <div class="tag">Law</div>
-          <h3>Law</h3>
-          <p>Client intake and case-status automation so no consultation request goes cold.</p>
-        </div>
-        <div class="case-card reveal">
-          <div class="tag">Restaurants</div>
-          <h3>Restaurants</h3>
-          <p>Reservation, waitlist and review-response systems that keep tables full.</p>
-        </div>
-        <div class="case-card reveal">
-          <div class="tag">Real Estate</div>
-          <h3>Real Estate</h3>
-          <p>Lead qualification and showing-scheduling agents that work every listing, every hour.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SYSTEM BUILDER -->
-  <section id="work">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">System builder</div>
-        <h2>The systems we build for modern businesses.</h2>
-        <p>From your website to your CRM, we design the AI layer that captures leads, automates work and gives you visibility over your entire operation.</p>
-      </div>
-
-      <div class="system-builder reveal">
-        <div class="system-map" aria-label="ReasonLab system map">
-          <div class="map-top">
-            <span class="mono">ReasonLab Operating Layer</span>
-            <small>AI + Automation + Software</small>
+        <div class="engine-panel reveal in">
+          <div class="panel-top">
+            <div class="window-dots"><span></span><span></span><span></span></div>
+            <p>ReasonLab AI Engine</p>
+            <small>ONLINE</small>
           </div>
 
-          <div class="map-flow">
-            <div class="map-node active">
-              <span>01</span>
-              Website / Forms
+          <div class="panel-body">
+            <div class="metric-row"><span>Lead response</span><strong>2.4s</strong></div>
+            <div class="metric-row"><span>Manual tasks detected</span><strong>17</strong></div>
+            <div class="metric-row"><span>Automation potential</span><strong>High</strong></div>
+
+            <div class="recommendation-card">
+              <small>Recommended system</small>
+              <h3>AI Lead Capture + CRM Automation</h3>
+              <p>Respond, qualify, follow up and book appointments automatically.</p>
             </div>
-            <div class="map-line"></div>
-            <div class="map-node">
-              <span>02</span>
-              AI Analysis Engine
-            </div>
-            <div class="map-line"></div>
-            <div class="map-node">
-              <span>03</span>
-              Automation Blueprint
-            </div>
-            <div class="map-line"></div>
-            <div class="map-node">
-              <span>04</span>
-              AI Agent
-            </div>
-            <div class="map-line"></div>
-            <div class="map-node">
-              <span>05</span>
-              CRM + Calendar + Email + SMS
-            </div>
-            <div class="map-line"></div>
-            <div class="map-node final">
-              <span>06</span>
-              Dashboard + Reports
+
+            <div class="terminal-preview" aria-label="Terminal preview">
+              <p>&gt; scanning customer journey...</p>
+              <p>&gt; finding revenue leaks...</p>
+              <p>&gt; generating automation blueprint...</p>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="system-cards">
-          <div class="system-card">
-            <span>01</span>
-            <h3>AI Receptionist</h3>
-            <p>Answers leads, books calls and qualifies customers instantly.</p>
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">What we deliver</div>
+          <h2>We don’t sell services. We build growth systems.</h2>
+          <p>Every project is designed around a business outcome: more leads, faster response times, fewer manual tasks and better visibility.</p>
+        </div>
+
+        <div class="results-grid">
+          <article class="result-card reveal"><div class="ico">↯</div><h3>Capture more leads</h3><p>Websites, forms and funnels built to turn visitors into qualified opportunities.</p></article>
+          <article class="result-card reveal"><div class="ico">◷</div><h3>Save hours every week</h3><p>Automations that remove repetitive work from your team’s daily operations.</p></article>
+          <article class="result-card reveal"><div class="ico">✦</div><h3>Never miss a customer</h3><p>AI agents that respond, qualify and follow up with leads 24/7.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">How we work</div>
+          <h2>Five steps. Nothing extra.</h2>
+          <p>We map the business, find the bottlenecks and build the highest-leverage system first.</p>
+        </div>
+
+        <div class="process reveal">
+          <div class="step"><div class="n">01</div><h3>Discover</h3><p>We map your operations and find where leads, time or revenue are being lost.</p></div>
+          <div class="step"><div class="n">02</div><h3>Analyze</h3><p>We identify the strongest automation and AI opportunities.</p></div>
+          <div class="step"><div class="n">03</div><h3>Build</h3><p>We design and ship the software, workflow or AI agent.</p></div>
+          <div class="step"><div class="n">04</div><h3>Automate</h3><p>We connect your tools so the system runs without manual effort.</p></div>
+          <div class="step"><div class="n">05</div><h3>Scale</h3><p>We measure what works and expand the system around growth.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="systems">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">System builder</div>
+          <h2>The systems we build for modern businesses.</h2>
+          <p>From your website to your CRM, we design the AI layer that captures leads, automates work and gives you visibility over your operation.</p>
+        </div>
+
+        <div class="system-builder reveal">
+          <div class="system-map">
+            <div class="map-top"><span>ReasonLab System Map</span><small>Live architecture</small></div>
+            <div class="map-flow">
+              <div class="map-node active"><span>01</span>Website / Forms</div><div class="map-line"></div>
+              <div class="map-node"><span>02</span>AI Analysis Engine</div><div class="map-line"></div>
+              <div class="map-node"><span>03</span>Automation Blueprint</div><div class="map-line"></div>
+              <div class="map-node"><span>04</span>AI Agent</div><div class="map-line"></div>
+              <div class="map-node"><span>05</span>CRM + Calendar + Email + SMS</div><div class="map-line"></div>
+              <div class="map-node final"><span>06</span>Dashboard + Reports</div>
+            </div>
           </div>
-          <div class="system-card">
-            <span>02</span>
-            <h3>Lead Engine</h3>
-            <p>Captures, scores and follows up with every opportunity.</p>
-          </div>
-          <div class="system-card">
-            <span>03</span>
-            <h3>Custom CRM</h3>
-            <p>Keeps customers, tasks and sales organized in one place.</p>
-          </div>
-          <div class="system-card">
-            <span>04</span>
-            <h3>Internal AI Assistant</h3>
-            <p>Reads your docs, SOPs and answers team questions.</p>
-          </div>
-          <div class="system-card">
-            <span>05</span>
-            <h3>Business Dashboard</h3>
-            <p>Shows leads, revenue, response time and opportunities.</p>
-          </div>
-          <div class="system-card">
-            <span>06</span>
-            <h3>Automation Layer</h3>
-            <p>Connects your tools so work happens automatically.</p>
+
+          <div class="system-cards">
+            <article class="system-card"><span>01</span><h3>AI Receptionist</h3><p>Answers leads, books calls and qualifies customers instantly.</p></article>
+            <article class="system-card"><span>02</span><h3>Lead Engine</h3><p>Captures, scores and follows up with every opportunity.</p></article>
+            <article class="system-card"><span>03</span><h3>Custom CRM</h3><p>Keeps customers, tasks and sales organized in one place.</p></article>
+            <article class="system-card"><span>04</span><h3>Internal AI Assistant</h3><p>Reads docs, SOPs and answers team questions.</p></article>
+            <article class="system-card"><span>05</span><h3>Business Dashboard</h3><p>Shows leads, revenue, response time and opportunities.</p></article>
+            <article class="system-card"><span>06</span><h3>Automation Layer</h3><p>Connects your tools so work happens automatically.</p></article>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- BUSINESS ANALYZER -->
-  <section id="analyzer">
-    <div class="wrap">
-      <div class="analyzer reveal">
-        <div class="analyzer-copy">
-          <div class="eyebrow">Free tool</div>
-          <h2>See what a system could do for your business.</h2>
-          <p>Enter your business and we'll show you where you're likely losing time, leads or revenue — and what we'd automate first.</p>
-        </div>
-        <div class="analyzer-form">
-          <label for="bizname">Business Name</label>
-          <input type="text" id="bizname" placeholder="e.g. Orlando Dental Studio">
-          <label for="bizsite">Website</label>
-          <input type="text" id="bizsite" placeholder="e.g. yourbusiness.com">
-          <button class="btn btn-primary" id="analyzeBtn" type="button">Analyze</button>
-          <div class="analyzer-result" id="analyzerResult"></div>
+    <section id="analyzer">
+      <div class="wrap">
+        <div class="analyzer reveal">
+          <div class="analyzer-copy">
+            <div class="eyebrow">Business Analyzer</div>
+            <h2>See what an AI system could do for your business.</h2>
+            <p>Enter your business details and get a simulated AI audit showing where you may be losing time, leads or revenue.</p>
+          </div>
+
+          <form class="analyzer-form" id="analyzerForm">
+            <label for="bizname">Business Name</label>
+            <input type="text" id="bizname" placeholder="e.g. Orlando Roofing Co." />
+
+            <label for="bizsite">Website</label>
+            <input type="text" id="bizsite" placeholder="e.g. yourbusiness.com" />
+
+            <div class="form-grid">
+              <div><label for="industry">Industry</label><select id="industry"><option value="">Select</option><option>Home Services</option><option>Medical</option><option>Law</option><option>Restaurant</option><option>Real Estate</option><option>Other</option></select></div>
+              <div><label for="challenge">Challenge</label><select id="challenge"><option value="">Select</option><option>More leads</option><option>Faster response</option><option>Manual work</option><option>Customer follow-up</option><option>Operations visibility</option></select></div>
+            </div>
+
+            <button class="btn btn-primary" id="analyzeBtn" type="submit">Analyze My Business</button>
+            <div class="analyzer-result" id="analyzerResult"></div>
+          </form>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">FAQ</div>
-        <h2>A few questions we always get.</h2>
-      </div>
-      <div class="reveal">
-        <div class="faq-item">
-          <button class="faq-q">What does ReasonLab actually build? <span class="plus">+</span></button>
-          <div class="faq-a"><p>AI automation, custom software, websites and AI agents — whatever system will move your business forward fastest. We scope it during the Discover step.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">How long does a project take? <span class="plus">+</span></button>
-          <div class="faq-a"><p>Most systems ship in 2–6 weeks depending on scope. We move in focused builds, not open-ended retainers.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">Do I need to already have a website? <span class="plus">+</span></button>
-          <div class="faq-a"><p>No. We can design and build one from scratch, or automate on top of what you already have.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q">How do we get started? <span class="plus">+</span></button>
-          <div class="faq-a"><p>Book a strategy call. We'll ask about your business, show you what's possible, and outline next steps — no pressure.</p></div>
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-head reveal"><div class="eyebrow">FAQ</div><h2>A few questions we always get.</h2></div>
+        <div class="faq-list reveal">
+          <div class="faq-item"><button class="faq-q">What does ReasonLab actually build?<span class="plus">+</span></button><div class="faq-a"><p>AI automation, custom software, websites, dashboards and AI agents — whatever system will move your business forward fastest.</p></div></div>
+          <div class="faq-item"><button class="faq-q">Is the Business Analyzer real?<span class="plus">+</span></button><div class="faq-a"><p>This v1 is a front-end demo. Later it can connect to a backend, analyze websites, generate reports and create leads automatically.</p></div></div>
+          <div class="faq-item"><button class="faq-q">How long does a project take?<span class="plus">+</span></button><div class="faq-a"><p>Most focused systems can ship in 2–6 weeks depending on scope, integrations and complexity.</p></div></div>
+          <div class="faq-item"><button class="faq-q">How do we get started?<span class="plus">+</span></button><div class="faq-a"><p>Book a strategy call. We’ll review your business and recommend the first system to build.</p></div></div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA / CONTACT -->
-  <section class="cta" id="contact" style="border-bottom:none;">
-    <div class="wrap">
-      <div class="reveal">
-        <div class="eyebrow" style="justify-content:center;">Let's talk</div>
+    <section class="cta" id="contact">
+      <div class="wrap reveal">
+        <div class="eyebrow centered">Let’s talk</div>
         <h2>Ready to build your system?</h2>
-        <p>Book a free strategy call and see exactly what we'd build for your business.</p>
+        <p>Book a free strategy call and see exactly what ReasonLab would build for your business.</p>
         <div class="cta-ctas">
           <a href="mailto:direccion@reasonlab.co?subject=Strategy%20Call%20Request" class="btn btn-primary">Book a Strategy Call</a>
           <a href="https://wa.me/14078832840" target="_blank" rel="noopener" class="btn btn-ghost">Message on WhatsApp</a>
         </div>
-        <div class="contact-row">
-          <a href="mailto:direccion@reasonlab.co">direccion@reasonlab.co</a>
-          <a href="tel:+14078832840">+1 (407) 883-2840</a>
-        </div>
+        <div class="contact-row"><a href="mailto:direccion@reasonlab.co">direccion@reasonlab.co</a><a href="tel:+14078832840">+1 (407) 883-2840</a></div>
       </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>© <span id="year"></span> ReasonLab LLC. All rights reserved.</p>
+      <div class="footer-links"><a href="mailto:direccion@reasonlab.co">Email</a><a href="tel:+14078832840">Call</a><a href="https://wa.me/14078832840" target="_blank" rel="noopener">WhatsApp</a></div>
     </div>
-  </section>
+  </footer>
 
-</main>
-
-<footer>
-  <div class="wrap footer-inner">
-    <p>© <span id="year"></span> ReasonLab LLC. All rights reserved.</p>
-    <div class="footer-links">
-      <a href="mailto:direccion@reasonlab.co">Email</a>
-      <a href="tel:+14078832840">Call</a>
-      <a href="https://wa.me/14078832840" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
-  </div>
-</footer>
-
-<script src="js/app.js"></script>
-
+  <script src="js/app.js"></script>
 </body>
 </html>
