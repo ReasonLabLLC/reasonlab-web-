@@ -303,7 +303,7 @@
 
             <div class="booking-actions">
               <button class="btn btn-primary" type="submit">Request Strategy Call</button>
-              <span class="booking-note">This sends a pre-filled email request. Calendar automation can be connected next.</span>
+              <span class="booking-note">By entering your contact details, you agree that ReasonLab may use them to follow up about your request.</span>
             </div>
 
             <div class="booking-status" id="bookingStatus"></div>
@@ -325,6 +325,8 @@
   </footer>
 
   <script>
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqggeyq';
+
     document.getElementById('year').textContent = new Date().getFullYear();
 
     const navToggle = document.getElementById('navToggle');
@@ -342,48 +344,120 @@
         document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
         slot.classList.add('selected');
         selectedSlot = slot.textContent.trim();
+        schedulePartialLeadCapture();
       });
     });
 
-    document.getElementById('bookingForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const company = document.getElementById('company').value.trim();
-      const website = document.getElementById('website').value.trim();
-      const industry = document.getElementById('industry').value;
-      const challenge = document.getElementById('challenge').value;
-      const notes = document.getElementById('notes').value.trim();
-      const status = document.getElementById('bookingStatus');
+    const bookingForm = document.getElementById('bookingForm');
+    const statusBox = document.getElementById('bookingStatus');
+    const leadSessionId = `reasonlab-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    let lastPartialSignature = '';
+    let partialTimer;
 
-      if (!selectedSlot) {
-        status.classList.add('show');
-        status.textContent = 'Please select a preferred time before sending your request.';
+    function getBookingData(status = 'partial_lead') {
+      return {
+        _subject: status === 'completed_booking'
+          ? 'ReasonLab booking request'
+          : 'ReasonLab partial lead captured',
+        lead_status: status,
+        lead_session_id: leadSessionId,
+        captured_from: 'reasonlab.co/book.html',
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        company: document.getElementById('company').value.trim(),
+        website: document.getElementById('website').value.trim(),
+        industry: document.getElementById('industry').value,
+        main_challenge: document.getElementById('challenge').value,
+        preferred_time: selectedSlot,
+        notes: document.getElementById('notes').value.trim()
+      };
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    async function sendToFormspree(data) {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Formspree submission failed');
+      }
+
+      return response.json();
+    }
+
+    function schedulePartialLeadCapture() {
+      clearTimeout(partialTimer);
+      partialTimer = setTimeout(async () => {
+        const data = getBookingData('partial_lead');
+
+        if (!data.name || !isValidEmail(data.email)) return;
+
+        const signature = JSON.stringify({
+          name: data.name,
+          email: data.email,
+          company: data.company,
+          website: data.website,
+          industry: data.industry,
+          main_challenge: data.main_challenge,
+          preferred_time: data.preferred_time
+        });
+
+        if (signature === lastPartialSignature) return;
+        lastPartialSignature = signature;
+
+        try {
+          await sendToFormspree(data);
+        } catch (error) {
+          console.warn('Partial lead capture failed:', error);
+        }
+      }, 1200);
+    }
+
+    ['name', 'email', 'company', 'website', 'industry', 'challenge', 'notes'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', schedulePartialLeadCapture);
+        el.addEventListener('change', schedulePartialLeadCapture);
+      }
+    });
+
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = getBookingData('completed_booking');
+
+      if (!data.name || !isValidEmail(data.email)) {
+        statusBox.classList.add('show');
+        statusBox.textContent = 'Please enter a valid name and email.';
         return;
       }
 
-      const body = [
-        'Hi ReasonLab,',
-        '',
-        'I would like to request an AI strategy call.',
-        '',
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Company: ${company || 'Not provided'}`,
-        `Website: ${website || 'Not provided'}`,
-        `Industry: ${industry || 'Not selected'}`,
-        `Main challenge: ${challenge || 'Not selected'}`,
-        `Preferred time: ${selectedSlot}`,
-        '',
-        `Notes: ${notes || 'None'}`,
-        '',
-        'Thank you.'
-      ].join('\n');
+      if (!selectedSlot) {
+        statusBox.classList.add('show');
+        statusBox.textContent = 'Please select a preferred time before sending your request.';
+        return;
+      }
 
-      status.classList.add('show');
-      status.textContent = 'Opening your email app with the request ready to send.';
+      statusBox.classList.add('show');
+      statusBox.textContent = 'Sending your request...';
 
-      window.location.href = `mailto:direccion@reasonlab.co?subject=${encodeURIComponent('AI Strategy Call Request')}&body=${encodeURIComponent(body)}`;
+      try {
+        await sendToFormspree(data);
+        statusBox.textContent = 'Request sent. ReasonLab will follow up with the meeting details.';
+        bookingForm.reset();
+        selectedSlot = '';
+        document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
+      } catch (error) {
+        statusBox.textContent = 'Something went wrong. Please try again or message us on WhatsApp.';
+      }
     });
   </script>
 </body>
