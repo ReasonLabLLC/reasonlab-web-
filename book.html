@@ -198,6 +198,9 @@
     .slot:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.25);}
     .slot.selected{border-color:rgba(210,23,103,.72);background:linear-gradient(120deg, rgba(112,41,161,.42), rgba(210,23,103,.26), rgba(255,105,13,.16));color:#fff;}
 
+    .time-select-wrap{display:grid;gap:8px;}
+    .availability-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);line-height:1.55;}
+
     .booking-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:6px;}
     .booking-actions .btn-primary{min-width:210px;}
     .booking-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);line-height:1.6;}
@@ -281,7 +284,7 @@
             <div class="form-grid">
               <div class="field"><label for="name">Name</label><input id="name" type="text" placeholder="Your name" required /></div>
               <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@company.com" required /></div>
-              <div class="field"><label for="phone">Phone <span class="optional">optional</span></label><input id="phone" type="tel" placeholder="(407) 000-0000" /></div>
+              <div class="field"><label for="phone">Phone Number</label><input id="phone" type="tel" placeholder="(407) 000-0000" /></div>
               <div class="field"><label for="company">Company</label><input id="company" type="text" placeholder="Company name" /></div>
               <div class="field"><label for="website">Website</label><input id="website" type="text" placeholder="company.com" /></div>
               <div class="field"><label for="industry">Industry</label><select id="industry"><option value="">Select industry</option><option>Home Services</option><option>Medical / Clinic</option><option>Law Firm</option><option>Restaurant</option><option>Real Estate</option><option>Other</option></select></div>
@@ -289,14 +292,12 @@
             </div>
 
             <div class="field">
-              <label>Preferred time</label>
-              <div class="slot-grid" id="slotGrid">
-                <button class="slot" type="button">Today · 3:00 PM</button>
-                <button class="slot" type="button">Today · 5:00 PM</button>
-                <button class="slot" type="button">Tomorrow · 10:00 AM</button>
-                <button class="slot" type="button">Tomorrow · 1:00 PM</button>
-                <button class="slot" type="button">Friday · 11:00 AM</button>
-                <button class="slot" type="button">Friday · 4:00 PM</button>
+              <label for="preferredTime">Select Time</label>
+              <div class="time-select-wrap">
+                <select id="preferredTime" name="preferred_time" required>
+                  <option value="">Loading available times...</option>
+                </select>
+                <span class="availability-hint">Available times are shown from the next open slots. ReasonLab will confirm the final meeting details.</span>
               </div>
             </div>
 
@@ -339,15 +340,66 @@
       });
     }
 
+    const preferredTimeSelect = document.getElementById('preferredTime');
     let selectedSlot = '';
-    document.querySelectorAll('.slot').forEach(slot => {
-      slot.addEventListener('click', () => {
-        document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
-        slot.classList.add('selected');
-        selectedSlot = slot.textContent.trim();
+
+    const availabilityTemplate = [
+      { dayOffset: 0, times: ['3:00 PM', '5:00 PM'] },
+      { dayOffset: 1, times: ['10:00 AM', '1:00 PM'] },
+      { dayOffset: 2, times: ['11:00 AM', '4:00 PM'] },
+      { dayOffset: 3, times: ['10:00 AM', '2:00 PM'] },
+      { dayOffset: 4, times: ['11:00 AM', '3:00 PM'] }
+    ];
+
+    function formatAvailabilityDate(date) {
+      const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
+
+      const sameDay = (a, b) =>
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
+
+      if (sameDay(date, today)) return 'Today';
+      if (sameDay(date, tomorrow)) return 'Tomorrow';
+
+      return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    }
+
+    function buildAvailableTimes() {
+      if (!preferredTimeSelect) return;
+
+      const now = new Date();
+      preferredTimeSelect.innerHTML = '<option value="">Select an available time</option>';
+
+      availabilityTemplate.forEach(day => {
+        const date = new Date();
+        date.setDate(now.getDate() + day.dayOffset);
+
+        const group = document.createElement('optgroup');
+        group.label = formatAvailabilityDate(date);
+
+        day.times.forEach(time => {
+          const option = document.createElement('option');
+          const label = `${formatAvailabilityDate(date)} · ${time}`;
+          option.value = label;
+          option.textContent = label;
+          group.appendChild(option);
+        });
+
+        preferredTimeSelect.appendChild(group);
+      });
+    }
+
+    buildAvailableTimes();
+
+    if (preferredTimeSelect) {
+      preferredTimeSelect.addEventListener('change', () => {
+        selectedSlot = preferredTimeSelect.value;
         schedulePartialLeadCapture();
       });
-    });
+    }
 
     const bookingForm = document.getElementById('bookingForm');
     const statusBox = document.getElementById('bookingStatus');
@@ -415,7 +467,7 @@
       }, 1200);
     }
 
-    ['name', 'email', 'phone', 'company', 'website', 'industry', 'challenge', 'notes'].forEach(id => {
+    ['name', 'email', 'phone', 'company', 'website', 'industry', 'challenge', 'preferredTime', 'notes'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('input', schedulePartialLeadCapture);
@@ -447,7 +499,7 @@
         statusBox.textContent = 'Request sent. ReasonLab will follow up with the meeting details.';
         bookingForm.reset();
         selectedSlot = '';
-        document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
+        if (preferredTimeSelect) preferredTimeSelect.value = '';
       } catch (error) {
         statusBox.textContent = 'Something went wrong. Please try again or message us on WhatsApp.';
       }
