@@ -13,24 +13,25 @@
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
   <header class="site-header">
     <nav class="wrap nav">
-      <a href="#top" class="brand" aria-label="ReasonLab home">
+      <a href="index.html#top" class="brand" aria-label="ReasonLab home">
         <span class="brand-mark"><img src="assets/logo-icon.png" alt="" /></span>
         <span class="brand-text">ReasonLab</span>
       </a>
 
       <div class="navlinks" id="navlinks">
-        <a href="#services">Services</a>
-        <a href="#process">Process</a>
-        <a href="#systems">Systems</a>
-        <a href="#analyzer">Analyzer</a>
-        <a href="#faq">FAQ</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#process">Process</a>
+        <a href="index.html#systems">Systems</a>
+        <a href="index.html#analyzer">Analyzer</a>
+        <a href="index.html#faq">FAQ</a>
       </div>
 
       <div class="nav-actions">
-        <a href="#analyzer" class="btn btn-ghost nav-audit">Business Analyzer</a>
+        <a href="index.html#analyzer" class="btn btn-ghost nav-audit">Business Analyzer</a>
         <a href="book.html" class="btn btn-primary">Book a Call</a>
         <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
       </div>
@@ -47,10 +48,14 @@
           <div class="eyebrow">ReasonLab LLC · AI Engineering</div>
           <h1>Your next employee <span class="accent">isn’t human.</span></h1>
           <p class="lead">We build AI systems that answer every lead, automate operations and scale your revenue — without hiring more staff.</p>
-          <p class="stack"><b>AI Automation</b> · <b>Custom Software</b> · <b>AI Agents</b> · <b>Business Systems</b></p>
+
+          <p class="stack">
+            <b>AI Automation</b> · <b>Custom Software</b> · <b>AI Agents</b> · <b>Business Systems</b>
+          </p>
+
           <div class="hero-ctas">
             <a href="book.html" class="btn btn-primary">Book a Strategy Call</a>
-            <a href="#analyzer" class="btn btn-ghost">Try Business Analyzer</a>
+            <a href="index.html#analyzer" class="btn btn-ghost">Try Business Analyzer</a>
           </div>
         </div>
 
@@ -91,9 +96,23 @@
         </div>
 
         <div class="results-grid">
-          <article class="result-card reveal"><div class="ico">↯</div><h3>Capture more leads</h3><p>Websites, forms and funnels built to turn visitors into qualified opportunities.</p></article>
-          <article class="result-card reveal"><div class="ico">◷</div><h3>Save hours every week</h3><p>Automations that remove repetitive work from your team’s daily operations.</p></article>
-          <article class="result-card reveal"><div class="ico">✦</div><h3>Never miss a customer</h3><p>AI agents that respond, qualify and follow up with leads 24/7.</p></article>
+          <article class="result-card reveal">
+            <div class="ico">↯</div>
+            <h3>Capture more leads</h3>
+            <p>Websites, forms and funnels built to turn visitors into qualified opportunities.</p>
+          </article>
+
+          <article class="result-card reveal">
+            <div class="ico">◷</div>
+            <h3>Save hours every week</h3>
+            <p>Automations that remove repetitive work from your team’s daily operations.</p>
+          </article>
+
+          <article class="result-card reveal">
+            <div class="ico">✦</div>
+            <h3>Never miss a customer</h3>
+            <p>AI agents that respond, qualify and follow up with leads 24/7.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -126,13 +145,22 @@
 
         <div class="system-builder reveal">
           <div class="system-map">
-            <div class="map-top"><span>ReasonLab System Map</span><small>Live architecture</small></div>
+            <div class="map-top">
+              <span>ReasonLab System Map</span>
+              <small>Live architecture</small>
+            </div>
+
             <div class="map-flow">
-              <div class="map-node active"><span>01</span>Website / Forms</div><div class="map-line"></div>
-              <div class="map-node"><span>02</span>AI Analysis Engine</div><div class="map-line"></div>
-              <div class="map-node"><span>03</span>Automation Blueprint</div><div class="map-line"></div>
-              <div class="map-node"><span>04</span>AI Agent</div><div class="map-line"></div>
-              <div class="map-node"><span>05</span>CRM + Calendar + Email + SMS</div><div class="map-line"></div>
+              <div class="map-node active"><span>01</span>Website / Forms</div>
+              <div class="map-line"></div>
+              <div class="map-node"><span>02</span>AI Analysis Engine</div>
+              <div class="map-line"></div>
+              <div class="map-node"><span>03</span>Automation Blueprint</div>
+              <div class="map-line"></div>
+              <div class="map-node"><span>04</span>AI Agent</div>
+              <div class="map-line"></div>
+              <div class="map-node"><span>05</span>CRM + Calendar + Email + SMS</div>
+              <div class="map-line"></div>
               <div class="map-node final"><span>06</span>Dashboard + Reports</div>
             </div>
           </div>
@@ -166,8 +194,30 @@
             <input type="text" id="bizsite" placeholder="e.g. yourbusiness.com" />
 
             <div class="form-grid">
-              <div><label for="industry">Industry</label><select id="industry"><option value="">Select</option><option>Home Services</option><option>Medical</option><option>Law</option><option>Restaurant</option><option>Real Estate</option><option>Other</option></select></div>
-              <div><label for="challenge">Challenge</label><select id="challenge"><option value="">Select</option><option>More leads</option><option>Faster response</option><option>Manual work</option><option>Customer follow-up</option><option>Operations visibility</option></select></div>
+              <div>
+                <label for="industry">Industry</label>
+                <select id="industry">
+                  <option value="">Select</option>
+                  <option>Home Services</option>
+                  <option>Medical</option>
+                  <option>Law</option>
+                  <option>Restaurant</option>
+                  <option>Real Estate</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="challenge">Challenge</label>
+                <select id="challenge">
+                  <option value="">Select</option>
+                  <option>More leads</option>
+                  <option>Faster response</option>
+                  <option>Manual work</option>
+                  <option>Customer follow-up</option>
+                  <option>Operations visibility</option>
+                </select>
+              </div>
             </div>
 
             <button class="btn btn-primary" id="analyzeBtn" type="submit">Analyze My Business</button>
@@ -179,12 +229,31 @@
 
     <section id="faq">
       <div class="wrap">
-        <div class="section-head reveal"><div class="eyebrow">FAQ</div><h2>A few questions we always get.</h2></div>
+        <div class="section-head reveal">
+          <div class="eyebrow">FAQ</div>
+          <h2>A few questions we always get.</h2>
+        </div>
+
         <div class="faq-list reveal">
-          <div class="faq-item"><button class="faq-q">What does ReasonLab actually build?<span class="plus">+</span></button><div class="faq-a"><p>AI automation, custom software, websites, dashboards and AI agents — whatever system will move your business forward fastest.</p></div></div>
-          <div class="faq-item"><button class="faq-q">Is the Business Analyzer real?<span class="plus">+</span></button><div class="faq-a"><p>This v1 is a front-end demo. Later it can connect to a backend, analyze websites, generate reports and create leads automatically.</p></div></div>
-          <div class="faq-item"><button class="faq-q">How long does a project take?<span class="plus">+</span></button><div class="faq-a"><p>Most focused systems can ship in 2–6 weeks depending on scope, integrations and complexity.</p></div></div>
-          <div class="faq-item"><button class="faq-q">How do we get started?<span class="plus">+</span></button><div class="faq-a"><p>Book a strategy call. We’ll review your business and recommend the first system to build.</p></div></div>
+          <div class="faq-item">
+            <button class="faq-q">What does ReasonLab actually build?<span class="plus">+</span></button>
+            <div class="faq-a"><p>AI automation, custom software, websites, dashboards and AI agents — whatever system will move your business forward fastest.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q">Is the Business Analyzer real?<span class="plus">+</span></button>
+            <div class="faq-a"><p>This v1 is a front-end demo. Later it can connect to a backend, analyze websites, generate reports and create leads automatically.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q">How long does a project take?<span class="plus">+</span></button>
+            <div class="faq-a"><p>Most focused systems can ship in 2–6 weeks depending on scope, integrations and complexity.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q">How do we get started?<span class="plus">+</span></button>
+            <div class="faq-a"><p>Book a strategy call. We’ll review your business and recommend the first system to build.</p></div>
+          </div>
         </div>
       </div>
     </section>
@@ -194,11 +263,16 @@
         <div class="eyebrow centered">Let’s talk</div>
         <h2>Ready to build your system?</h2>
         <p>Book a free strategy call and see exactly what ReasonLab would build for your business.</p>
+
         <div class="cta-ctas">
-          <a href="mailto:direccion@reasonlab.co?subject=Strategy%20Call%20Request" class="btn btn-primary">Book a Strategy Call</a>
+          <a href="book.html" class="btn btn-primary">Book a Strategy Call</a>
           <a href="https://wa.me/14078832840" target="_blank" rel="noopener" class="btn btn-ghost">Message on WhatsApp</a>
         </div>
-        <div class="contact-row"><a href="mailto:direccion@reasonlab.co">direccion@reasonlab.co</a><a href="tel:+14078832840">+1 (407) 883-2840</a></div>
+
+        <div class="contact-row">
+          <a href="mailto:direccion@reasonlab.co">direccion@reasonlab.co</a>
+          <a href="tel:+14078832840">+1 (407) 883-2840</a>
+        </div>
       </div>
     </section>
   </main>
@@ -206,7 +280,11 @@
   <footer>
     <div class="wrap footer-inner">
       <p>© <span id="year"></span> ReasonLab LLC. All rights reserved.</p>
-      <div class="footer-links"><a href="mailto:direccion@reasonlab.co">Email</a><a href="tel:+14078832840">Call</a><a href="https://wa.me/14078832840" target="_blank" rel="noopener">WhatsApp</a></div>
+      <div class="footer-links">
+        <a href="mailto:direccion@reasonlab.co">Email</a>
+        <a href="tel:+14078832840">Call</a>
+        <a href="https://wa.me/14078832840" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
     </div>
   </footer>
 
