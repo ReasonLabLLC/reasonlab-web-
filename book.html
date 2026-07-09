@@ -281,6 +281,7 @@
             <div class="form-grid">
               <div class="field"><label for="name">Name</label><input id="name" type="text" placeholder="Your name" required /></div>
               <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@company.com" required /></div>
+              <div class="field"><label for="phone">Phone <span class="optional">optional</span></label><input id="phone" type="tel" placeholder="(407) 000-0000" /></div>
               <div class="field"><label for="company">Company</label><input id="company" type="text" placeholder="Company name" /></div>
               <div class="field"><label for="website">Website</label><input id="website" type="text" placeholder="company.com" /></div>
               <div class="field"><label for="industry">Industry</label><select id="industry"><option value="">Select industry</option><option>Home Services</option><option>Medical / Clinic</option><option>Law Firm</option><option>Restaurant</option><option>Real Estate</option><option>Other</option></select></div>
@@ -303,7 +304,7 @@
 
             <div class="booking-actions">
               <button class="btn btn-primary" type="submit">Request Strategy Call</button>
-              <span class="booking-note">By entering your contact details, you agree that ReasonLab may use them to follow up about your request.</span>
+              <span class="booking-note">By entering your contact details, you agree that ReasonLab may use them to follow up about your request. A partial lead is saved once when name and email are entered.</span>
             </div>
 
             <div class="booking-status" id="bookingStatus"></div>
@@ -351,7 +352,7 @@
     const bookingForm = document.getElementById('bookingForm');
     const statusBox = document.getElementById('bookingStatus');
     const leadSessionId = `reasonlab-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    let lastPartialSignature = '';
+    let partialAlreadySent = false;
     let partialTimer;
 
     function getBookingData(status = 'partial_lead') {
@@ -364,6 +365,7 @@
         captured_from: 'reasonlab.co/book.html',
         name: document.getElementById('name').value.trim(),
         email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
         company: document.getElementById('company').value.trim(),
         website: document.getElementById('website').value.trim(),
         industry: document.getElementById('industry').value,
@@ -401,28 +403,19 @@
 
         if (!data.name || !isValidEmail(data.email)) return;
 
-        const signature = JSON.stringify({
-          name: data.name,
-          email: data.email,
-          company: data.company,
-          website: data.website,
-          industry: data.industry,
-          main_challenge: data.main_challenge,
-          preferred_time: data.preferred_time
-        });
-
-        if (signature === lastPartialSignature) return;
-        lastPartialSignature = signature;
+        if (partialAlreadySent) return;
+        partialAlreadySent = true;
 
         try {
           await sendToFormspree(data);
         } catch (error) {
+          partialAlreadySent = false;
           console.warn('Partial lead capture failed:', error);
         }
       }, 1200);
     }
 
-    ['name', 'email', 'company', 'website', 'industry', 'challenge', 'notes'].forEach(id => {
+    ['name', 'email', 'phone', 'company', 'website', 'industry', 'challenge', 'notes'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('input', schedulePartialLeadCapture);
