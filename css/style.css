@@ -48,3 +48,22 @@ section{padding:105px 0}.section-head{max-width:770px;margin-bottom:42px}.sectio
 /* ===== FINAL OVERRIDES: BOOK + SAFE NAV ===== */
 .nav-actions{display:flex;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:800}.brand-mark img{width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(255,255,255,.15))}.brand-text{font-weight:800}.book-page .book-hero{padding-top:145px}.book-page .book-layout{display:grid;grid-template-columns:.92fr 1.08fr;gap:52px;align-items:start}.book-page .book-card input,.book-page .book-card select,.book-page .book-card textarea{appearance:auto}.book-page .book-card .btn{appearance:none}.cal-section{display:none}.cal-section.show{display:block}.cal-embed-wrap iframe{width:100%;height:760px;border:0;background:#050509}.booking-status.show{display:block}
 @media(max-width:1020px){.book-page .book-layout{grid-template-columns:1fr}.book-page .book-card{max-width:760px}}
+
+/* ===== PRODUCTION FIXES: BOOK PAGE + CTA NAV ===== */
+.book-page{min-height:100vh;background:var(--bg);}
+.book-page main{position:relative;z-index:1;}
+.book-page .site-header{z-index:200;}
+.book-page .book-card,.book-page .book-mini-card,.book-page .cal-embed-wrap{backdrop-filter:blur(14px);}
+.book-page .field input,.book-page .field select,.book-page .field textarea{min-height:50px;}
+.book-page .field textarea{line-height:1.55;}
+.book-page .book-submit{border:0;}
+.book-page .cal-section{padding-bottom:40px;}
+a[data-book-link="true"]{scroll-margin-top:90px;}
+@media(max-width:760px){
+  .book-page .book-layout{gap:28px;}
+  .book-page .book-card{padding:22px;}
+  .book-card-top{flex-direction:column;align-items:flex-start;}
+  .book-status-pill{align-self:flex-start;}
+  .book-page .book-mini-card{max-width:none;}
+  .book-page .cal-section{margin-top:28px;}
+}
