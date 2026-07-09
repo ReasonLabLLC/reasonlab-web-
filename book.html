@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Strategy Call — ReasonLab</title>
+  <meta name="description" content="Book a free AI strategy call with ReasonLab to review your business, find automation opportunities and plan your first intelligent system." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .booking-page{
+      min-height:100vh;
+      padding:140px 0 80px;
+      position:relative;
+      overflow:hidden;
+      border-bottom:1px solid var(--line);
+    }
+
+    .booking-page::before{
+      content:"";
+      position:absolute;
+      top:-220px;
+      left:50%;
+      width:900px;
+      height:700px;
+      transform:translateX(-50%);
+      background:radial-gradient(circle, rgba(112,41,161,.34), rgba(0,0,0,0) 64%);
+      filter:blur(18px);
+      pointer-events:none;
+    }
+
+    .booking-page::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.8), transparent 80%);
+      pointer-events:none;
+    }
+
+    .booking-grid{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:44px;
+      align-items:start;
+    }
+
+    .booking-copy{
+      position:sticky;
+      top:110px;
+    }
+
+    .booking-copy h1{
+      font-size:clamp(40px,5.2vw,68px);
+      line-height:1.02;
+      margin-bottom:22px;
+      letter-spacing:-.045em;
+    }
+
+    .booking-copy h1 span{
+      background:var(--grad);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .booking-copy .lead{
+      max-width:540px;
+      font-size:18px;
+      color:#b6bec5;
+      margin-bottom:30px;
+    }
+
+    .booking-points{
+      display:grid;
+      gap:14px;
+      margin:34px 0;
+    }
+
+    .booking-point{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      color:#dfe7ea;
+      font-size:14px;
+    }
+
+    .booking-point span{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px;
+      color:#00e08a;
+      background:rgba(0,224,138,.08);
+      border:1px solid rgba(0,224,138,.22);
+    }
+
+    .booking-mini-card{
+      margin-top:34px;
+      max-width:440px;
+      background:rgba(19,18,32,.72);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 24px 80px -56px rgba(0,0,0,.9);
+    }
+
+    .booking-mini-card .mini-row{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      padding:12px 0;
+      border-bottom:1px solid var(--line);
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px;
+      color:var(--slate);
+    }
+
+    .booking-mini-card .mini-row:last-child{
+      border-bottom:none;
+    }
+
+    .booking-mini-card strong{
+      color:#fff;
+      font-family:'Montserrat',sans-serif;
+      font-size:13px;
+    }
+
+    .booking-card{
+      background:linear-gradient(180deg, rgba(19,18,32,.92), rgba(12,11,20,.92));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:34px;
+      box-shadow:0 40px 120px -72px rgba(0,0,0,.95);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .booking-card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(210,23,103,.18), transparent 32%),
+        radial-gradient(circle at 100% 100%, rgba(0,182,221,.12), transparent 34%);
+      pointer-events:none;
+    }
+
+    .booking-card > *{
+      position:relative;
+      z-index:1;
+    }
+
+    .booking-card h2{
+      font-size:28px;
+      margin-bottom:8px;
+    }
+
+    .booking-card .card-subtitle{
+      font-size:14px;
+      color:#9fa9b2;
+      margin-bottom:28px;
+    }
+
+    .booking-form{
+      display:grid;
+      gap:18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#8a9aa1;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      background:#0b0a12;
+      color:#fff;
+      border:1px solid rgba(245,245,247,.1);
+      border-radius:12px;
+      padding:14px 15px;
+      font-family:'Montserrat',sans-serif;
+      font-size:14px;
+      outline:none;
+      transition:border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .field textarea{
+      min-height:108px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:rgba(0,182,221,.62);
+      box-shadow:0 0 0 3px rgba(0,182,221,.08);
+    }
+
+    .slot-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+
+    .slot{
+      border:1px solid rgba(245,245,247,.1);
+      background:rgba(255,255,255,.025);
+      color:#dfe7ea;
+      padding:13px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px;
+      transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .slot:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.25);
+    }
+
+    .slot.selected{
+      border-color:rgba(210,23,103,.72);
+      background:linear-gradient(120deg, rgba(112,41,161,.42), rgba(210,23,103,.26), rgba(255,105,13,.16));
+      color:#fff;
+    }
+
+    .booking-actions{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .booking-actions .btn-primary{
+      min-width:210px;
+    }
+
+    .booking-note{
+      font-family:'JetBrains Mono',monospace;
+      font-size:11px;
+      color:var(--slate);
+      line-height:1.6;
+    }
+
+    .booking-status{
+      display:none;
+      margin-top:18px;
+      border:1px solid rgba(0,182,221,.22);
+      background:rgba(0,182,221,.075);
+      color:#dff9ff;
+      border-radius:14px;
+      padding:16px;
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .booking-status.show{
+      display:block;
+    }
+
+    @media(max-width:960px){
+      .booking-grid{
+        grid-template-columns:1fr;
+      }
+
+      .booking-copy{
+        position:relative;
+        top:auto;
+      }
+    }
+
+    @media(max-width:680px){
+      .booking-page{
+        padding:120px 0 60px;
+      }
+
+      .booking-card{
+        padding:24px;
+        border-radius:20px;
+      }
+
+      .form-grid,
+      .slot-grid{
+        grid-template-columns:1fr;
+      }
+
+      .booking-actions .btn-primary{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="wrap">
+      <a href="index.html#top" class="logo" aria-label="ReasonLab home">
+        <img src="assets/logo-icon.png" alt="ReasonLab" class="mark" />
+        <span>ReasonLab</span>
+      </a>
+
+      <div class="navlinks" id="navlinks">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#process">Process</a>
+        <a href="index.html#systems">Systems</a>
+        <a href="index.html#analyzer">Analyzer</a>
+        <a href="index.html#faq">FAQ</a>
+      </div>
+
+      <div class="navcta">
+        <a href="index.html#analyzer" class="btn btn-ghost">Business Analyzer</a>
+        <a href="book.html" class="btn btn-primary">Book a Call</a>
+        <button class="navToggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="booking-page">
+      <div class="wrap booking-grid">
+        <div class="booking-copy">
+          <div class="eyebrow">Free strategy session</div>
+          <h1>Book your <span>AI strategy call.</span></h1>
+          <p class="lead">
+            In 30 minutes, we’ll review your business, identify automation opportunities and map the first intelligent system ReasonLab would build for you.
+          </p>
+
+          <div class="booking-points">
+            <div class="booking-point"><span>✓</span><p>We review your website, lead flow and current operations.</p></div>
+            <div class="booking-point"><span>✓</span><p>You get a clear first-build recommendation, not vague AI ideas.</p></div>
+            <div class="booking-point"><span>✓</span><p>No pressure. The goal is to find the highest-leverage opportunity.</p></div>
+          </div>
+
+          <div class="booking-mini-card">
+            <div class="mini-row"><span>Duration</span><strong>30 minutes</strong></div>
+            <div class="mini-row"><span>Location</span><strong>Google Meet / Phone</strong></div>
+            <div class="mini-row"><span>Cost</span><strong>Free</strong></div>
+            <div class="mini-row"><span>Outcome</span><strong>Automation roadmap</strong></div>
+          </div>
+        </div>
+
+        <div class="booking-card">
+          <h2>Request a strategy call</h2>
+          <p class="card-subtitle">Choose a preferred time and send your request. We’ll confirm availability and send the meeting details.</p>
+
+          <form class="booking-form" id="bookingForm">
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" required />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@company.com" required />
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="company">Company</label>
+                <input id="company" name="company" type="text" placeholder="Company name" required />
+              </div>
+
+              <div class="field">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" placeholder="company.com" />
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="industry">Industry</label>
+                <select id="industry" name="industry" required>
+                  <option value="">Select industry</option>
+                  <option>Home Services</option>
+                  <option>Medical / Clinic</option>
+                  <option>Law Firm</option>
+                  <option>Restaurant</option>
+                  <option>Real Estate</option>
+                  <option>E-commerce</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="challenge">Main challenge</label>
+                <select id="challenge" name="challenge" required>
+                  <option value="">Select challenge</option>
+                  <option>Getting more leads</option>
+                  <option>Responding faster</option>
+                  <option>Too much manual work</option>
+                  <option>Organizing customers</option>
+                  <option>Following up consistently</option>
+                  <option>Building a custom system</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Preferred time</label>
+              <div class="slot-grid" id="slotGrid">
+                <button type="button" class="slot">Today · 3:00 PM</button>
+                <button type="button" class="slot">Today · 5:00 PM</button>
+                <button type="button" class="slot">Tomorrow · 10:00 AM</button>
+                <button type="button" class="slot">Tomorrow · 1:00 PM</button>
+                <button type="button" class="slot">Friday · 11:00 AM</button>
+                <button type="button" class="slot">Friday · 4:00 PM</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="notes">Anything we should know?</label>
+              <textarea id="notes" name="notes" placeholder="Tell us what you want to automate, improve or build."></textarea>
+            </div>
+
+            <div class="booking-actions">
+              <button class="btn btn-primary" type="submit">Request Strategy Call</button>
+              <p class="booking-note">This v1 sends a pre-filled email request. Calendar automation can be connected next.</p>
+            </div>
+
+            <div class="booking-status" id="bookingStatus"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>© <span id="year"></span> ReasonLab LLC. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="mailto:direccion@reasonlab.co">Email</a>
+        <a href="tel:+14078832840">Call</a>
+        <a href="https://wa.me/14078832840" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    const slots = document.querySelectorAll('.slot');
+    let selectedSlot = '';
+
+    slots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        slots.forEach(s => s.classList.remove('selected'));
+        slot.classList.add('selected');
+        selectedSlot = slot.textContent.trim();
+      });
+    });
+
+    const form = document.getElementById('bookingForm');
+    const statusBox = document.getElementById('bookingStatus');
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        company: document.getElementById('company').value.trim(),
+        website: document.getElementById('website').value.trim(),
+        industry: document.getElementById('industry').value,
+        challenge: document.getElementById('challenge').value,
+        notes: document.getElementById('notes').value.trim(),
+        time: selectedSlot || 'No preferred time selected'
+      };
+
+      const subject = encodeURIComponent('Strategy Call Request — ' + data.company);
+      const body = encodeURIComponent(
+        `New strategy call request\n\n` +
+        `Name: ${data.name}\n` +
+        `Email: ${data.email}\n` +
+        `Company: ${data.company}\n` +
+        `Website: ${data.website || 'N/A'}\n` +
+        `Industry: ${data.industry}\n` +
+        `Main challenge: ${data.challenge}\n` +
+        `Preferred time: ${data.time}\n\n` +
+        `Notes:\n${data.notes || 'N/A'}`
+      );
+
+      statusBox.classList.add('show');
+      statusBox.innerHTML = 'Your request is ready. Your email app will open with the booking details. Send it to complete the request.';
+
+      window.location.href = `mailto:direccion@reasonlab.co?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
