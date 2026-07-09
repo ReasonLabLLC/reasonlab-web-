@@ -351,3 +351,22 @@ $$('.faq-q').forEach(button => {
     }
   });
 })();
+
+
+/* ===== FINAL: make every book CTA navigate reliably ===== */
+document.querySelectorAll('a[data-book-link="true"]').forEach((link)=>{
+  link.addEventListener('click',(e)=>{
+    e.preventDefault();
+    const saveBtnData = document.getElementById('analyzerForm');
+    if (saveBtnData) {
+      const data = {
+        company: document.getElementById('bizname')?.value?.trim() || '',
+        website: document.getElementById('bizsite')?.value?.trim() || '',
+        industry: document.getElementById('industry')?.value || '',
+        challenge: document.getElementById('challenge')?.value || ''
+      };
+      localStorage.setItem('reasonlab_analyzer', JSON.stringify(data));
+    }
+    window.location.assign('/book.html');
+  });
+});
