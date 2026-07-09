@@ -9,305 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="assets/favicon.png">
-<style>
-  :root{
-    --bg:#08080c;
-    --bg-elev:#0f0e17;
-    --bg-card:#131220;
-    --line:rgba(245,245,247,0.09);
-    --purple:#7029A1;
-    --magenta:#D21767;
-    --navy:#26175B;
-    --slate:#8a9aa1;
-    --orange:#FF690D;
-    --blue:#0568c9;
-    --cyan:#00b6dd;
-    --white:#F5F5F7;
-    --grad: linear-gradient(120deg,#7029A1 0%,#D21767 55%,#FF690D 100%);
-    --grad-cool: linear-gradient(120deg,#26175B 0%,#0568c9 60%,#00b6dd 100%);
-    --maxw:1160px;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--white);
-    font-family:'Montserrat',sans-serif;
-    font-weight:400;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  ::selection{ background:var(--magenta); color:#fff; }
-  a{ color:inherit; text-decoration:none; }
-  img{ max-width:100%; display:block; }
-  .mono{ font-family:'JetBrains Mono',monospace; }
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
-  .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--cyan);
-    display:flex; align-items:center; gap:10px;
-    margin-bottom:18px;
-  }
-  .eyebrow::before{ content:''; width:16px; height:1px; background:var(--cyan); display:inline-block; }
-  h1,h2,h3{ font-weight:800; letter-spacing:-0.02em; }
-  h2{ font-size:clamp(28px,4vw,42px); }
-  p{ color:#c7cdd2; }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
-  }
-
-  /* ---------- NAV ---------- */
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    background:rgba(8,8,12,0.72);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-  }
-  nav.wrap{
-    display:flex; align-items:center; justify-content:space-between;
-    height:72px;
-  }
-  .logo{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; letter-spacing:-0.01em; }
-  .logo .mark{
-    width:28px; height:28px;
-    object-fit:contain;
-    flex:none;
-  }
-  .navlinks{ display:flex; gap:34px; align-items:center; }
-  .navlinks a{ font-size:14px; color:#c7cdd2; transition:color .2s; }
-  .navlinks a:hover{ color:#fff; }
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center;
-    gap:8px; padding:12px 22px; border-radius:8px;
-    font-size:14px; font-weight:600; cursor:pointer;
-    border:1px solid transparent; transition:transform .18s ease, box-shadow .18s ease, border-color .18s;
-    white-space:nowrap;
-  }
-  .btn:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
-  .btn-primary{ background:var(--grad); color:#fff; box-shadow:0 0 0 rgba(210,23,103,0); }
-  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 24px -8px rgba(210,23,103,0.6); }
-  .btn-ghost{ border-color:var(--line); color:#fff; background:transparent; }
-  .btn-ghost:hover{ border-color:rgba(255,255,255,0.35); }
-  .navcta{ display:flex; gap:12px; align-items:center; }
-  .navcta .btn{ padding:10px 18px; font-size:13px; }
-  .navToggle{ display:none; background:none; border:none; color:#fff; font-size:22px; cursor:pointer; }
-
-  /* ---------- HERO ---------- */
-  .hero{
-    position:relative; padding:180px 0 120px; overflow:hidden;
-    border-bottom:1px solid var(--line);
-  }
-  .hero::before{
-    content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%);
-    width:900px; height:600px; border-radius:50%;
-    background:radial-gradient(circle, rgba(112,41,161,0.35), rgba(0,0,0,0) 65%);
-    filter:blur(10px); pointer-events:none;
-  }
-  #node-canvas{
-    position:absolute; inset:0; width:100%; height:100%;
-    opacity:0.55; pointer-events:none;
-  }
-  .hero-inner{ position:relative; z-index:2; max-width:760px; }
-  .hero h1{
-    font-size:clamp(36px,5.6vw,64px);
-    line-height:1.06;
-    margin-bottom:22px;
-  }
-  .hero h1 .accent{
-    background:var(--grad);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .hero p.lead{
-    font-size:17px; color:#a9b4ba;
-    max-width:520px; margin-bottom:14px;
-  }
-  .hero .stack{
-    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--slate);
-    letter-spacing:0.02em; margin-bottom:38px;
-  }
-  .hero .stack b{ color:#fff; font-weight:500; }
-  .hero-ctas{ display:flex; gap:16px; flex-wrap:wrap; }
-  .hero-ctas .btn{ padding:15px 26px; font-size:15px; }
-
-  /* ---------- SECTION shared ---------- */
-  section{ padding:110px 0; border-bottom:1px solid var(--line); position:relative; }
-  .section-head{ max-width:640px; margin-bottom:56px; }
-  .section-head p{ font-size:16px; margin-top:14px; }
-
-  /* ---------- RESULTS ---------- */
-  .results-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-  .result-card{
-    background:var(--bg-card); border:1px solid var(--line); border-radius:14px;
-    padding:32px 28px; transition:border-color .2s, transform .2s;
-  }
-  .result-card:hover{ border-color:rgba(210,23,103,0.4); transform:translateY(-3px); }
-  .result-card .ico{
-    width:42px; height:42px; border-radius:10px; margin-bottom:22px;
-    display:flex; align-items:center; justify-content:center;
-    background:rgba(112,41,161,0.15); color:var(--magenta);
-  }
-  .result-card h3{ font-size:19px; margin-bottom:10px; }
-  .result-card p{ font-size:14.5px; }
-
-  /* ---------- PROCESS ---------- */
-  .process{
-    display:flex; justify-content:space-between; position:relative; gap:8px;
-  }
-  .process::before{
-    content:''; position:absolute; top:19px; left:20px; right:20px; height:1px;
-    background:linear-gradient(90deg, var(--navy), var(--blue), var(--cyan), var(--orange));
-    opacity:0.5;
-  }
-  .step{ flex:1; text-align:left; position:relative; z-index:1; padding-right:10px; }
-  .step .n{
-    width:40px; height:40px; border-radius:50%;
-    background:var(--bg); border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--cyan);
-    margin-bottom:18px;
-  }
-  .step h3{ font-size:16px; margin-bottom:8px; }
-  .step p{ font-size:13.5px; }
-
-  /* ---------- USE CASES ---------- */
-  .cases-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
-  .case-card{
-    background:var(--bg-card); border:1px solid var(--line); border-radius:12px;
-    padding:22px 18px; min-height:190px; display:flex; flex-direction:column; justify-content:space-between;
-    transition:border-color .2s, transform .2s;
-  }
-  .case-card:hover{ border-color:rgba(0,182,221,0.4); transform:translateY(-3px); }
-  .case-card .tag{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--cyan); letter-spacing:0.06em; text-transform:uppercase;}
-  .case-card h3{ font-size:16px; margin:10px 0 8px; }
-  .case-card p{ font-size:12.5px; color:var(--slate); }
-
-  /* ---------- WORK / CASE STUDY ---------- */
-  .work-card{
-    background:linear-gradient(135deg, rgba(112,41,161,0.14), rgba(255,105,13,0.08));
-    border:1px solid var(--line); border-radius:18px;
-    padding:44px; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
-  }
-  .work-visual{
-    aspect-ratio:4/3; border-radius:14px; position:relative; overflow:hidden;
-    background:#0c0b14; border:1px solid var(--line);
-  }
-  .work-visual .grid-bg{
-    position:absolute; inset:0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-    background-size:24px 24px;
-  }
-  .work-visual .glow{
-    position:absolute; width:60%; height:60%; border-radius:50%;
-    top:20%; left:20%;
-    background:radial-gradient(circle, rgba(255,105,13,0.5), transparent 70%);
-    filter:blur(30px);
-  }
-  .work-visual .plate{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  }
-  .work-visual .plate svg{ width:56%; }
-  .work-content .tag{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--orange); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px; display:block;}
-  .work-content h3{ font-size:24px; margin-bottom:14px; }
-  .work-content p{ margin-bottom:14px; font-size:14.5px; }
-  .work-stats{ display:flex; gap:28px; margin-top:22px; }
-  .work-stats div b{ display:block; font-size:22px; font-family:'JetBrains Mono',monospace; color:#fff; }
-  .work-stats div span{ font-size:12px; color:var(--slate); }
-
-  /* ---------- ANALYZER ---------- */
-  .analyzer{
-    background:var(--bg-elev); border:1px solid var(--line); border-radius:18px;
-    padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
-  }
-  .analyzer-copy .eyebrow{ margin-bottom:16px; }
-  .analyzer-copy h2{ margin-bottom:16px; }
-  .analyzer-form{
-    background:var(--bg-card); border:1px solid var(--line); border-radius:14px; padding:28px;
-  }
-  .analyzer-form label{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--slate); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;}
-  .analyzer-form input{
-    width:100%; background:#0c0b14; border:1px solid var(--line); border-radius:8px;
-    padding:13px 14px; color:#fff; font-family:'Montserrat',sans-serif; font-size:14px;
-    margin-bottom:18px; transition:border-color .2s;
-  }
-  .analyzer-form input:focus{ outline:none; border-color:var(--cyan); }
-  .analyzer-form .btn{ width:100%; }
-  .analyzer-result{
-    margin-top:16px; font-family:'JetBrains Mono',monospace; font-size:13px;
-    color:var(--cyan); min-height:20px; line-height:1.6;
-  }
-  .analyzer-result .line{ opacity:0; animation:typeIn .4s forwards; }
-  @keyframes typeIn{ to{ opacity:1; } }
-
-  /* ---------- FAQ ---------- */
-  .faq-item{ border-bottom:1px solid var(--line); }
-  .faq-item:first-child{ border-top:1px solid var(--line); }
-  .faq-q{
-    width:100%; text-align:left; background:none; border:none; color:#fff;
-    padding:24px 4px; font-family:'Montserrat',sans-serif; font-size:16px; font-weight:600;
-    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
-  }
-  .faq-q .plus{ font-family:'JetBrains Mono',monospace; color:var(--cyan); font-size:18px; transition:transform .25s; flex:none; margin-left:20px; }
-  .faq-item.open .plus{ transform:rotate(45deg); }
-  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
-  .faq-a p{ padding:0 4px 24px; font-size:14.5px; max-width:640px; }
-
-  /* ---------- CTA ---------- */
-  .cta{
-    text-align:center; padding:130px 0;
-    background:radial-gradient(ellipse at center, rgba(112,41,161,0.18), rgba(8,8,12,0) 65%);
-  }
-  .cta h2{ font-size:clamp(30px,4.4vw,46px); margin-bottom:18px; }
-  .cta p{ font-size:16px; max-width:480px; margin:0 auto 36px; }
-  .cta-ctas{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
-  .contact-row{
-    display:flex; gap:28px; justify-content:center; margin-top:40px; flex-wrap:wrap;
-    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--slate);
-  }
-  .contact-row a{ color:#fff; border-bottom:1px solid var(--line); padding-bottom:2px; transition:border-color .2s; }
-  .contact-row a:hover{ border-color:var(--cyan); }
-
-  /* ---------- FOOTER ---------- */
-  footer{ padding:44px 0; }
-  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; }
-  footer p{ font-size:13px; color:var(--slate); }
-  .footer-links{ display:flex; gap:24px; }
-  .footer-links a{ font-size:13px; color:var(--slate); transition:color .2s; }
-  .footer-links a:hover{ color:#fff; }
-
-  /* reveal on scroll */
-  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
-  .reveal.in{ opacity:1; transform:translateY(0); }
-
-  /* ---------- RESPONSIVE ---------- */
-  @media (max-width:960px){
-    .results-grid{ grid-template-columns:1fr 1fr; }
-    .cases-grid{ grid-template-columns:repeat(3,1fr); }
-    .process{ flex-wrap:wrap; row-gap:34px; }
-    .process::before{ display:none; }
-    .step{ flex:0 0 45%; }
-    .work-card, .analyzer{ grid-template-columns:1fr; }
-    .work-visual{ order:-1; }
-  }
-  @media (max-width:680px){
-    .navlinks{ position:fixed; top:72px; left:0; right:0; background:rgba(8,8,12,0.98); flex-direction:column; padding:24px 28px; gap:20px; border-bottom:1px solid var(--line); transform:translateY(-130%); transition:transform .25s ease; }
-    .navlinks.open{ transform:translateY(0); }
-    .navToggle{ display:block; }
-    .navcta .btn-ghost{ display:none; }
-    .results-grid{ grid-template-columns:1fr; }
-    .cases-grid{ grid-template-columns:1fr 1fr; }
-    .step{ flex:0 0 100%; }
-    section{ padding:70px 0; }
-    .hero{ padding:150px 0 80px; }
-    .work-card, .analyzer{ padding:28px; }
-  }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -317,7 +19,7 @@
     <div class="navlinks" id="navlinks">
       <a href="#services">Services</a>
       <a href="#process">How we work</a>
-      <a href="#work">Work</a>
+      <a href="#work">Systems</a>
       <a href="#analyzer">Analyzer</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -341,7 +43,7 @@
       <p class="stack"><b>AI Automation</b> · <b>Custom Software</b> · <b>Websites</b> · <b>AI Agents</b></p>
       <div class="hero-ctas">
         <a href="#contact" class="btn btn-primary">Book a Strategy Call</a>
-        <a href="#work" class="btn btn-ghost">See Our Work</a>
+        <a href="#work" class="btn btn-ghost">Explore Systems</a>
       </div>
     </div>
   </section>
@@ -433,35 +135,85 @@
     </div>
   </section>
 
-  <!-- FEATURED WORK -->
+  <!-- SYSTEM BUILDER -->
   <section id="work">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="eyebrow">Featured work</div>
-        <h2>Real systems. Real output.</h2>
+        <div class="eyebrow">System builder</div>
+        <h2>The systems we build for modern businesses.</h2>
+        <p>From your website to your CRM, we design the AI layer that captures leads, automates work and gives you visibility over your entire operation.</p>
       </div>
-      <div class="work-card reveal">
-        <div class="work-visual">
-          <div class="grid-bg"></div>
-          <div class="glow"></div>
-          <div class="plate">
-            <svg viewBox="0 0 200 200" fill="none">
-              <circle cx="100" cy="100" r="70" stroke="#FF690D" stroke-width="1.5" opacity="0.6"/>
-              <circle cx="100" cy="100" r="46" stroke="#D21767" stroke-width="1.5" opacity="0.6"/>
-              <circle cx="100" cy="100" r="6" fill="#FF690D"/>
-              <path d="M100 30v14M100 156v14M30 100h14M156 100h14" stroke="#7B949A" stroke-width="1.2"/>
-            </svg>
+
+      <div class="system-builder reveal">
+        <div class="system-map" aria-label="ReasonLab system map">
+          <div class="map-top">
+            <span class="mono">ReasonLab Operating Layer</span>
+            <small>AI + Automation + Software</small>
+          </div>
+
+          <div class="map-flow">
+            <div class="map-node active">
+              <span>01</span>
+              Website / Forms
+            </div>
+            <div class="map-line"></div>
+            <div class="map-node">
+              <span>02</span>
+              AI Analysis Engine
+            </div>
+            <div class="map-line"></div>
+            <div class="map-node">
+              <span>03</span>
+              Automation Blueprint
+            </div>
+            <div class="map-line"></div>
+            <div class="map-node">
+              <span>04</span>
+              AI Agent
+            </div>
+            <div class="map-line"></div>
+            <div class="map-node">
+              <span>05</span>
+              CRM + Calendar + Email + SMS
+            </div>
+            <div class="map-line"></div>
+            <div class="map-node final">
+              <span>06</span>
+              Dashboard + Reports
+            </div>
           </div>
         </div>
-        <div class="work-content">
-          <span class="tag">Sabor USA · AI-Generated Product Imagery</span>
-          <h3>Photorealistic AI imagery for USA food recipes</h3>
-          <p>We partnered with Sabor USA to produce photorealistic, AI-generated imagery promoting American food products across recipe content — eliminating the cost and turnaround time of traditional photo shoots while keeping every image on-brand and scroll-stopping.</p>
-          <p>Every image was generated, art-directed and refined by ReasonLab's AI imaging pipeline, built specifically for consistent, campaign-ready output.</p>
-          <div class="work-stats">
-            <div><b>0</b><span>Photo shoots needed</span></div>
-            <div><b>AI</b><span>Generated at scale</span></div>
-            <div><b>100%</b><span>On-brand output</span></div>
+
+        <div class="system-cards">
+          <div class="system-card">
+            <span>01</span>
+            <h3>AI Receptionist</h3>
+            <p>Answers leads, books calls and qualifies customers instantly.</p>
+          </div>
+          <div class="system-card">
+            <span>02</span>
+            <h3>Lead Engine</h3>
+            <p>Captures, scores and follows up with every opportunity.</p>
+          </div>
+          <div class="system-card">
+            <span>03</span>
+            <h3>Custom CRM</h3>
+            <p>Keeps customers, tasks and sales organized in one place.</p>
+          </div>
+          <div class="system-card">
+            <span>04</span>
+            <h3>Internal AI Assistant</h3>
+            <p>Reads your docs, SOPs and answers team questions.</p>
+          </div>
+          <div class="system-card">
+            <span>05</span>
+            <h3>Business Dashboard</h3>
+            <p>Shows leads, revenue, response time and opportunities.</p>
+          </div>
+          <div class="system-card">
+            <span>06</span>
+            <h3>Automation Layer</h3>
+            <p>Connects your tools so work happens automatically.</p>
           </div>
         </div>
       </div>
@@ -479,7 +231,7 @@
         </div>
         <div class="analyzer-form">
           <label for="bizname">Business Name</label>
-          <input type="text" id="bizname" placeholder="e.g. Sabor USA">
+          <input type="text" id="bizname" placeholder="e.g. Orlando Dental Studio">
           <label for="bizsite">Website</label>
           <input type="text" id="bizsite" placeholder="e.g. yourbusiness.com">
           <button class="btn btn-primary" id="analyzeBtn" type="button">Analyze</button>
@@ -549,125 +301,7 @@
   </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // mobile nav
-  const navToggle = document.getElementById('navToggle');
-  const navlinks = document.getElementById('navlinks');
-  navToggle.addEventListener('click', () => navlinks.classList.toggle('open'));
-  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
-
-  // scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  reveals.forEach(el => io.observe(el));
-
-  // FAQ accordion
-  document.querySelectorAll('.faq-item').forEach(item => {
-    const q = item.querySelector('.faq-q');
-    const a = item.querySelector('.faq-a');
-    q.addEventListener('click', () => {
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(o => { o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null; });
-      if (!isOpen) { item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
-    });
-  });
-
-  // Business analyzer (front-end simulation)
-  const analyzeBtn = document.getElementById('analyzeBtn');
-  const resultBox = document.getElementById('analyzerResult');
-  analyzeBtn.addEventListener('click', () => {
-    const name = document.getElementById('bizname').value.trim();
-    const site = document.getElementById('bizsite').value.trim();
-    if (!name) { resultBox.innerHTML = '<div class="line" style="animation-delay:.05s; color:#D21767;">&gt; Please enter a business name.</div>'; resultBox.querySelectorAll('.line').forEach(l=>l.style.opacity=1); return; }
-    resultBox.innerHTML = '';
-    const lines = [
-      '> Scanning ' + name + (site ? ' (' + site + ')' : '') + ' ...',
-      '> Full analysis engine launches in ReasonLab v2.',
-      '> Want the real breakdown now? Book a strategy call below.'
-    ];
-    lines.forEach((text, i) => {
-      const div = document.createElement('div');
-      div.className = 'line';
-      div.style.animationDelay = (i * 0.35) + 's';
-      div.textContent = text;
-      resultBox.appendChild(div);
-      setTimeout(() => { div.style.opacity = 1; }, i * 350);
-    });
-  });
-
-  // Hero node network canvas
-  (function(){
-    const canvas = document.getElementById('node-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h, nodes, animId;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function resize(){
-      w = canvas.width = canvas.offsetWidth * devicePixelRatio;
-      h = canvas.height = canvas.offsetHeight * devicePixelRatio;
-    }
-
-    function init(){
-      resize();
-      const count = window.innerWidth < 680 ? 22 : 42;
-      nodes = Array.from({length: count}, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25 * devicePixelRatio,
-        vy: (Math.random() - 0.5) * 0.25 * devicePixelRatio,
-        r: Math.random() * 1.6 + 0.8
-      }));
-    }
-
-    const colors = ['#7029A1', '#D21767', '#00b6dd', '#FF690D'];
-
-    function draw(){
-      ctx.clearRect(0, 0, w, h);
-      const linkDist = 140 * devicePixelRatio;
-
-      for (let i = 0; i < nodes.length; i++){
-        const n = nodes[i];
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 0 || n.x > w) n.vx *= -1;
-        if (n.y < 0 || n.y > h) n.vy *= -1;
-      }
-      for (let i = 0; i < nodes.length; i++){
-        for (let j = i + 1; j < nodes.length; j++){
-          const a = nodes[i], b = nodes[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < linkDist){
-            ctx.strokeStyle = 'rgba(122, 148, 154,' + (1 - dist/linkDist) * 0.35 + ')';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
-      }
-      nodes.forEach((n, i) => {
-        ctx.fillStyle = colors[i % colors.length];
-        ctx.globalAlpha = 0.85;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * devicePixelRatio, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      });
-      animId = requestAnimationFrame(draw);
-    }
-
-    init();
-    if (!reduceMotion) { draw(); } else {
-      // draw a single static frame
-      draw(); cancelAnimationFrame(animId);
-    }
-    window.addEventListener('resize', () => { cancelAnimationFrame(animId); init(); if(!reduceMotion) draw(); });
-  })();
-</script>
+<script src="js/app.js"></script>
 
 </body>
 </html>
