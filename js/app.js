@@ -186,72 +186,62 @@ if ('IntersectionObserver' in window && revealEls.length) {
 
 // ---------- Hero engine panel (4 live views) ----------
 (function initEnginePanel() {
+  const panel = document.querySelector('.engine-panel');
   const timeline = document.getElementById('epTimeline');
   if (!timeline) return;
 
-  const line = document.getElementById('epLine');
   const steps = Array.from(timeline.querySelectorAll('.ep-step'));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function playTimeline() {
-    steps.forEach(s => s.classList.remove('show'));
-    line.style.transition = 'none';
-    line.style.height = '0px';
-    void line.offsetHeight;
-    let i = 0;
-    const iv = setInterval(() => {
-      if (i < steps.length) {
-        steps[i].classList.add('show');
-        line.style.transition = 'height .5s linear';
-        line.style.height = `${i * 37}px`;
-        i++;
-      } else {
-        clearInterval(iv);
-      }
-    }, 420);
+  function revealTimeline() {
+    timeline.classList.add('timeline-ready');
+    steps.forEach((step, index) => {
+      window.setTimeout(() => step.classList.add('show'), reduceMotion ? 0 : index * 220);
+    });
+  }
+
+  function setFinalValue(el, target, mode) {
+    if (!el) return;
+    if (mode === 'revenue') el.textContent = `$${target.toLocaleString()}`;
+    else if (mode === 'speed') el.textContent = `${target.toFixed(1)}s`;
+    else el.textContent = `${target}`;
   }
 
   function animateCount(el, target, mode, duration) {
     if (!el) return;
+    if (reduceMotion) {
+      setFinalValue(el, target, mode);
+      return;
+    }
+
     let start = null;
-    function step(ts) {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / duration, 1);
-      if (mode === 'revenue') el.textContent = `$${Math.floor(p * target).toLocaleString()}`;
-      else if (mode === 'speed') el.textContent = `${(p * target).toFixed(1)}s`;
-      else el.textContent = `${Math.floor(p * target)}`;
-      if (p < 1) requestAnimationFrame(step);
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      if (mode === 'revenue') el.textContent = `$${Math.floor(eased * target).toLocaleString()}`;
+      else if (mode === 'speed') el.textContent = `${(eased * target).toFixed(1)}s`;
+      else el.textContent = `${Math.floor(eased * target)}`;
+
+      if (progress < 1) requestAnimationFrame(step);
+      else setFinalValue(el, target, mode);
     }
     requestAnimationFrame(step);
   }
 
-  function runDashboard() {
-    animateCount(document.getElementById('epLeads'), 12, 'int', 1400);
-    animateCount(document.getElementById('epSpeed'), 2.4, 'speed', 1400);
-    animateCount(document.getElementById('epRevenue'), 2400, 'revenue', 1600);
+  function runDashboardOnce() {
+    animateCount(document.getElementById('epLeads'), 12, 'int', 1300);
+    animateCount(document.getElementById('epSpeed'), 2.4, 'speed', 1300);
+    animateCount(document.getElementById('epRevenue'), 2400, 'revenue', 1500);
+    animateCount(document.getElementById('epStopwatch'), 2.4, 'speed', 900);
   }
 
-  function runStopwatch() {
-    const el = document.getElementById('epStopwatch');
-    if (!el) return;
-    let start = null;
-    const duration = 900;
-    function step(ts) {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / duration, 1);
-      el.textContent = `${(p * 2.4).toFixed(1)}s`;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  playTimeline();
-  runDashboard();
-  runStopwatch();
-  setInterval(() => {
-    playTimeline();
-    runDashboard();
-    runStopwatch();
-  }, 6000);
+  window.setTimeout(() => {
+    revealTimeline();
+    runDashboardOnce();
+    if (panel) panel.classList.add('is-complete');
+  }, 180);
 })();
 $$('.faq-q').forEach(button => {
   button.addEventListener('click', () => {
