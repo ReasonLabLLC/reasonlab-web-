@@ -1,14 +1,14 @@
-ReasonLab Production V6 — Manual Task Removed Metric
+ReasonLab Production v7 — Hero Pulse
 
-Replace these files in the repository:
+Cambios incluidos:
+- Glow morado del hero con efecto pulso suave.
+- Mantiene el bloque Manual Task Removed.
+- Mantiene visual zones/glows por seccion.
+- Mantiene timeline fix y animaciones de hero en una sola ejecucion.
+
+Archivos a reemplazar en GitHub:
 - index.html
 - book.html
 - css/style.css
 - js/app.js
 - CNAME
-
-Change included:
-- Replaced the old "Calls booked" metric in the Today card with "Manual task removed".
-- Added animated counter from 0 to 14.
-- Added three smaller animated chips: Form, Follow-up, CRM.
-- Animation runs once and remains fixed after completion.

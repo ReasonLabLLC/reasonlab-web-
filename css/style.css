@@ -875,3 +875,31 @@ main > section:not(.hero):not(.book-hero)::after {
     font-size: 9px;
   }
 }
+
+/* ===== V7: HERO PURPLE BACKGROUND PULSE ===== */
+.hero::before,
+.book-hero::before{
+  transform:translateX(-50%) scale(1);
+  transform-origin:center center;
+  animation:heroPulse 7s ease-in-out infinite;
+  will-change:transform, opacity;
+}
+
+@keyframes heroPulse{
+  0%,100%{
+    transform:translateX(-50%) scale(1);
+    opacity:.82;
+  }
+  50%{
+    transform:translateX(-50%) scale(1.06);
+    opacity:1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero::before,
+  .book-hero::before{
+    animation:none;
+    opacity:.9;
+  }
+}
