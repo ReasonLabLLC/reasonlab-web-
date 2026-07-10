@@ -135,7 +135,7 @@ if ('IntersectionObserver' in window && revealEls.length) {
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.25,
       vy: (Math.random() - 0.5) * 0.25,
-      r: Math.random() * 1.8 + 1,
+      r: Math.random() * 2.6 + 1.8,
       c: ['#7029A1', '#D21767', '#FF690D', '#00B6DD'][Math.floor(Math.random() * 4)]
     }));
   }
@@ -160,12 +160,12 @@ if ('IntersectionObserver' in window && revealEls.length) {
         const dx = p.x - q.x;
         const dy = p.y - q.y;
         const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < 130) {
+        if (d < 155) {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(q.x, q.y);
-          ctx.strokeStyle = 'rgba(245,245,247,.08)';
-          ctx.globalAlpha = 1 - d / 130;
+          ctx.strokeStyle = 'rgba(245,245,247,.16)';
+          ctx.globalAlpha = 1 - d / 155;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -184,7 +184,75 @@ if ('IntersectionObserver' in window && revealEls.length) {
   });
 })();
 
-// ---------- FAQ ----------
+// ---------- Hero engine panel (4 live views) ----------
+(function initEnginePanel() {
+  const timeline = document.getElementById('epTimeline');
+  if (!timeline) return;
+
+  const line = document.getElementById('epLine');
+  const steps = Array.from(timeline.querySelectorAll('.ep-step'));
+
+  function playTimeline() {
+    steps.forEach(s => s.classList.remove('show'));
+    line.style.transition = 'none';
+    line.style.height = '0px';
+    void line.offsetHeight;
+    let i = 0;
+    const iv = setInterval(() => {
+      if (i < steps.length) {
+        steps[i].classList.add('show');
+        line.style.transition = 'height .5s linear';
+        line.style.height = `${i * 37}px`;
+        i++;
+      } else {
+        clearInterval(iv);
+      }
+    }, 420);
+  }
+
+  function animateCount(el, target, mode, duration) {
+    if (!el) return;
+    let start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      if (mode === 'revenue') el.textContent = `$${Math.floor(p * target).toLocaleString()}`;
+      else if (mode === 'speed') el.textContent = `${(p * target).toFixed(1)}s`;
+      else el.textContent = `${Math.floor(p * target)}`;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function runDashboard() {
+    animateCount(document.getElementById('epLeads'), 12, 'int', 1400);
+    animateCount(document.getElementById('epSpeed'), 2.4, 'speed', 1400);
+    animateCount(document.getElementById('epRevenue'), 2400, 'revenue', 1600);
+  }
+
+  function runStopwatch() {
+    const el = document.getElementById('epStopwatch');
+    if (!el) return;
+    let start = null;
+    const duration = 900;
+    function step(ts) {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      el.textContent = `${(p * 2.4).toFixed(1)}s`;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  playTimeline();
+  runDashboard();
+  runStopwatch();
+  setInterval(() => {
+    playTimeline();
+    runDashboard();
+    runStopwatch();
+  }, 6000);
+})();
 $$('.faq-q').forEach(button => {
   button.addEventListener('click', () => {
     const item = button.closest('.faq-item');
