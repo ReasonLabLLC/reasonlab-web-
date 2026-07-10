@@ -279,3 +279,377 @@ a[data-book-link="true"]{scroll-margin-top:90px;}
     font-size: 14px;
   }
 }
+
+/* ===== TIMELINE LINE MASK FIX ===== */
+/* The timeline line stays behind the bubbles and is hidden inside each icon circle. */
+.engine-panel #epTimeline::before {
+  z-index: 0;
+}
+
+.engine-panel .ep-step {
+  z-index: 2;
+}
+
+.engine-panel .ep-icon {
+  position: relative;
+  z-index: 3;
+  isolation: isolate;
+  box-shadow: 0 0 0 7px #0a0a10;
+}
+
+.engine-panel .ep-icon-magenta {
+  background: #5b0b32 !important;
+  color: #ff3b94;
+}
+
+.engine-panel .ep-icon-purple {
+  background: #2d1247 !important;
+  color: #b98be0;
+}
+
+.engine-panel .ep-icon-cyan {
+  background: #063f4d !important;
+  color: #00B6DD;
+}
+
+.engine-panel .ep-icon-orange {
+  background: #51210c !important;
+  color: #ff9a4d;
+}
+
+.engine-panel .ep-icon-green {
+  background: #203a13 !important;
+  color: #9ecf5a;
+}
+
+/* ==========================================================
+   REASONLAB V4 — SECTION ZONES + DEPTH
+   Adds distinct atmospheres below the hero without making the
+   whole site lighter. Each section gets its own visual zone.
+   ========================================================== */
+
+main > section:not(.hero):not(.book-hero) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+main > section:not(.hero):not(.book-hero)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(980px, calc(100% - 48px));
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(0, 182, 221, .26), rgba(210, 23, 103, .22), transparent);
+  opacity: .8;
+  z-index: -1;
+}
+
+main > section:not(.hero):not(.book-hero)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 35%, rgba(0,0,0,.95), transparent 68%);
+  opacity: .32;
+  z-index: -2;
+}
+
+/* SERVICES — subtle magenta/purple glow around the cards */
+#services {
+  background:
+    radial-gradient(circle at 20% 16%, rgba(210, 23, 103, .18), transparent 32%),
+    radial-gradient(circle at 78% 70%, rgba(112, 41, 161, .13), transparent 34%),
+    linear-gradient(180deg, rgba(14,14,20,0) 0%, rgba(20,15,31,.62) 48%, rgba(14,14,20,.92) 100%);
+}
+
+#services .results-grid {
+  position: relative;
+}
+
+#services .results-grid::before {
+  content: "";
+  position: absolute;
+  inset: -50px -36px;
+  background: radial-gradient(ellipse at center, rgba(210, 23, 103, .16), transparent 66%);
+  filter: blur(18px);
+  z-index: -1;
+}
+
+.result-card,
+.system-card,
+.step {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 70px rgba(0, 0, 0, .18);
+}
+
+.result-card::before,
+.system-card::before,
+.step::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--magenta), var(--orange));
+  opacity: .55;
+}
+
+.result-card:hover,
+.system-card:hover,
+.step:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245,245,247,.22);
+  background: linear-gradient(180deg, rgba(25,24,40,.94), rgba(14,13,23,.82));
+  box-shadow: 0 28px 90px rgba(0,0,0,.28), 0 0 42px rgba(112,41,161,.10);
+}
+
+.result-card,
+.system-card,
+.step {
+  transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+/* PROCESS — connected progression instead of floating cards */
+#process {
+  background:
+    radial-gradient(circle at 50% 28%, rgba(0, 182, 221, .10), transparent 36%),
+    linear-gradient(180deg, rgba(14,14,20,.9), rgba(11,16,25,.72), rgba(14,14,20,.92));
+}
+
+.process {
+  position: relative;
+}
+
+.process::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 39px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,182,221,.52), rgba(210,23,103,.38), transparent);
+  z-index: 0;
+}
+
+.step {
+  z-index: 1;
+}
+
+.step .n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(0,182,221,.10);
+  border: 1px solid rgba(0,182,221,.18);
+}
+
+/* SYSTEMS — blue/cyber architecture zone */
+#systems {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(0, 182, 221, .16), transparent 32%),
+    radial-gradient(circle at 15% 72%, rgba(5, 104, 201, .16), transparent 36%),
+    linear-gradient(180deg, rgba(10,15,25,.94), rgba(9,19,34,.76), rgba(14,14,20,.92));
+}
+
+.system-builder {
+  position: relative;
+}
+
+.system-builder::before {
+  content: "";
+  position: absolute;
+  inset: -34px;
+  border-radius: 32px;
+  background: radial-gradient(ellipse at center, rgba(0,182,221,.11), transparent 64%);
+  filter: blur(14px);
+  z-index: -1;
+}
+
+.system-map {
+  border-color: rgba(0,182,221,.18);
+  background:
+    linear-gradient(180deg, rgba(11,24,39,.84), rgba(14,13,24,.82));
+  box-shadow: inset 0 0 0 1px rgba(0,182,221,.04), 0 28px 90px rgba(0,0,0,.22);
+}
+
+.map-node {
+  transition: transform .22s ease, border-color .22s ease, background .22s ease;
+}
+
+.map-node:hover {
+  transform: translateX(4px);
+  border-color: rgba(0,182,221,.32);
+  background: rgba(0,182,221,.08);
+}
+
+.system-card:nth-child(3),
+.system-card:nth-child(5) {
+  border-color: rgba(0,182,221,.17);
+}
+
+/* ANALYZER — make it feel like a premium interactive tool */
+#analyzer {
+  background:
+    radial-gradient(circle at 18% 36%, rgba(255, 105, 13, .16), transparent 30%),
+    radial-gradient(circle at 86% 44%, rgba(210, 23, 103, .18), transparent 34%),
+    linear-gradient(180deg, rgba(14,14,20,.94), rgba(25,15,25,.72), rgba(14,14,20,.95));
+}
+
+#analyzer .analyzer {
+  position: relative;
+  border-color: rgba(255,255,255,.14);
+  background:
+    linear-gradient(180deg, rgba(25,24,40,.86), rgba(13,12,22,.78));
+  box-shadow: 0 32px 110px rgba(0,0,0,.34), 0 0 80px rgba(210,23,103,.08);
+}
+
+#analyzer .analyzer::before {
+  content: "Free AI Snapshot";
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid rgba(0,182,221,.22);
+  background: rgba(0,182,221,.08);
+  border-radius: 999px;
+  padding: 8px 10px;
+}
+
+#analyzer .analyzer-form input,
+#analyzer .analyzer-form select {
+  background: rgba(8,8,14,.72);
+  border-color: rgba(255,255,255,.11);
+}
+
+#analyzer .analyzer-form .btn {
+  min-height: 54px;
+  box-shadow: 0 22px 70px rgba(210,23,103,.32);
+}
+
+/* FAQ — cleaner panel so the area does not feel empty */
+#faq {
+  background:
+    radial-gradient(circle at 50% 16%, rgba(112, 41, 161, .12), transparent 34%),
+    linear-gradient(180deg, rgba(14,14,20,.94), rgba(13,13,22,.86));
+}
+
+#faq .faq-list {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(19,18,32,.58), rgba(10,10,16,.62));
+  padding: 0 26px;
+  box-shadow: 0 28px 90px rgba(0,0,0,.22);
+}
+
+#faq .faq-item:last-child {
+  border-bottom: 0;
+}
+
+.faq-q:hover {
+  color: var(--cyan);
+}
+
+/* FINAL CTA — stronger closing section */
+.cta#contact {
+  padding: 125px 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(210,23,103,.22), transparent 33%),
+    radial-gradient(circle at 50% 72%, rgba(112,41,161,.22), transparent 42%),
+    linear-gradient(180deg, rgba(14,14,20,.96), rgba(22,14,31,.92));
+}
+
+.cta#contact .wrap {
+  position: relative;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 28px;
+  padding: 64px 28px;
+  background:
+    linear-gradient(180deg, rgba(23,22,38,.72), rgba(10,10,16,.56));
+  box-shadow: 0 34px 120px rgba(0,0,0,.34), 0 0 90px rgba(210,23,103,.12);
+  overflow: hidden;
+}
+
+.cta#contact .wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,.07), transparent 42%);
+  pointer-events: none;
+}
+
+.cta#contact h2,
+.cta#contact p,
+.cta#contact .cta-ctas,
+.cta#contact .contact-row,
+.cta#contact .eyebrow {
+  position: relative;
+  z-index: 1;
+}
+
+/* Softer vertical rhythm so the bottom feels designed, not flat */
+#services,
+#process,
+#systems,
+#analyzer,
+#faq {
+  padding-top: 118px;
+  padding-bottom: 118px;
+}
+
+@media(max-width: 1020px) {
+  .process::before {
+    display: none;
+  }
+
+  #analyzer .analyzer::before {
+    position: static;
+    display: inline-flex;
+    width: max-content;
+    margin-bottom: 18px;
+  }
+}
+
+@media(max-width: 760px) {
+  main > section:not(.hero):not(.book-hero)::after {
+    opacity: .22;
+  }
+
+  #services,
+  #process,
+  #systems,
+  #analyzer,
+  #faq {
+    padding-top: 82px;
+    padding-bottom: 82px;
+  }
+
+  #faq .faq-list {
+    padding: 0 18px;
+  }
+
+  .cta#contact {
+    padding: 80px 0;
+  }
+
+  .cta#contact .wrap {
+    padding: 46px 20px;
+  }
+}
