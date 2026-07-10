@@ -230,11 +230,24 @@ if ('IntersectionObserver' in window && revealEls.length) {
     requestAnimationFrame(step);
   }
 
+
+  function revealManualTaskChips() {
+    const chips = Array.from(document.querySelectorAll('.ep-manual-chip'));
+    if (!chips.length) return;
+
+    chips.forEach(chip => chip.classList.remove('show'));
+
+    chips.forEach((chip, index) => {
+      window.setTimeout(() => chip.classList.add('show'), reduceMotion ? 0 : 720 + index * 190);
+    });
+  }
+
   function runDashboardOnce() {
     animateCount(document.getElementById('epLeads'), 12, 'int', 1300);
     animateCount(document.getElementById('epSpeed'), 2.4, 'speed', 1300);
     animateCount(document.getElementById('epRevenue'), 2400, 'revenue', 1500);
-    animateCount(document.getElementById('epBooked'), 4, 'int', 1400);
+    animateCount(document.getElementById('epManualTasks'), 14, 'int', 1400);
+    revealManualTaskChips();
     animateCount(document.getElementById('epStopwatch'), 2.4, 'speed', 900);
   }
 

@@ -718,3 +718,160 @@ main > section:not(.hero):not(.book-hero)::after {
     min-height: 88px;
   }
 }
+
+
+/* ===== V6: MANUAL TASK REMOVED METRIC ===== */
+.engine-card.ep-today .ep-manual {
+  grid-column: span 2;
+  position: relative;
+  overflow: hidden;
+  min-height: 102px;
+  border: 1px solid rgba(255, 105, 13, .22);
+  border-radius: 12px;
+  padding: 12px;
+  background:
+    radial-gradient(circle at 88% 20%, rgba(255, 105, 13, .16), transparent 38%),
+    radial-gradient(circle at 12% 100%, rgba(210, 23, 103, .13), transparent 42%),
+    linear-gradient(135deg, rgba(255, 105, 13, .075), rgba(112, 41, 161, .06));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.engine-card.ep-today .ep-manual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
+  transform: translateX(-120%);
+  animation: epManualSheen 1.35s ease 1.15s 1 forwards;
+  pointer-events: none;
+}
+
+@keyframes epManualSheen {
+  to { transform: translateX(120%); }
+}
+
+.engine-card.ep-today .ep-manual-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.engine-card.ep-today .ep-manual small {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: #ffb17d;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 2px;
+}
+
+.engine-card.ep-today .ep-manual strong {
+  display: block;
+  font-size: clamp(28px, 2.55vw, 38px);
+  line-height: .95;
+  font-weight: 850;
+  letter-spacing: -.06em;
+  background: linear-gradient(120deg, #fff 0%, #f5f5f7 30%, #FF690D 68%, #D21767 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.engine-card.ep-today .ep-manual-pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 0 rgba(255, 105, 13, .55);
+  margin-top: 4px;
+  flex: 0 0 auto;
+  animation: epManualPulse 1.45s ease-in-out infinite;
+}
+
+@keyframes epManualPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,105,13,.5); }
+  50% { box-shadow: 0 0 0 8px rgba(255,105,13,0); }
+}
+
+.engine-card.ep-today .ep-manual-chips {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.engine-card.ep-today .ep-manual-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 28px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
+  color: #f5f5f7;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.8px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(7px);
+  overflow: hidden;
+}
+
+.engine-card.ep-today .ep-manual-chip::before {
+  content: "✓";
+  color: var(--cyan);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.engine-card.ep-today .ep-manual-chip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -85%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  transform: skewX(-18deg);
+}
+
+.engine-card.ep-today .ep-manual-chip.show {
+  animation: epManualChipIn .46s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.engine-card.ep-today .ep-manual-chip.show::after {
+  animation: epManualChipSweep .9s ease .2s forwards;
+}
+
+@keyframes epManualChipIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes epManualChipSweep {
+  to { left: 130%; }
+}
+
+@media(max-width: 640px) {
+  .engine-card.ep-today .ep-manual {
+    min-height: 112px;
+  }
+
+  .engine-card.ep-today .ep-manual-chips {
+    gap: 7px;
+  }
+
+  .engine-card.ep-today .ep-manual-chip {
+    min-height: 30px;
+    font-size: 9px;
+  }
+}
