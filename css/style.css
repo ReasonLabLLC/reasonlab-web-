@@ -653,3 +653,68 @@ main > section:not(.hero):not(.book-hero)::after {
     padding: 46px 20px;
   }
 }
+
+
+/* ===== V5: TODAY DASHBOARD EXTRA METRIC ===== */
+.engine-card.ep-today {
+  display: flex;
+  flex-direction: column;
+}
+
+.engine-card.ep-today .ep-dash {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: .86fr 1fr 1.12fr;
+  gap: 12px;
+  min-height: 0;
+}
+
+.engine-card.ep-today .ep-metric {
+  min-height: 0;
+}
+
+.engine-card.ep-today .ep-metric.wide {
+  grid-column: span 2;
+}
+
+.engine-card.ep-today .ep-metric-accent {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(0, 182, 221, .22);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(0, 182, 221, .16), transparent 38%),
+    linear-gradient(135deg, rgba(0, 182, 221, .075), rgba(112, 41, 161, .055));
+}
+
+.engine-card.ep-today .ep-metric-accent::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.045), transparent);
+  transform: translateX(-120%);
+  animation: epMetricSheen 3.8s ease-in-out 1.2s 1 forwards;
+  pointer-events: none;
+}
+
+@keyframes epMetricSheen {
+  to { transform: translateX(120%); }
+}
+
+.engine-card.ep-today .ep-metric-accent small {
+  color: var(--cyan);
+}
+
+.engine-card.ep-today .ep-metric-accent strong {
+  font-size: clamp(25px, 2.1vw, 34px);
+}
+
+@media(max-width: 640px) {
+  .engine-card.ep-today .ep-dash {
+    grid-template-rows: auto auto auto;
+  }
+
+  .engine-card.ep-today .ep-metric {
+    min-height: 88px;
+  }
+}

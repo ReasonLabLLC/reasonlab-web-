@@ -234,6 +234,7 @@ if ('IntersectionObserver' in window && revealEls.length) {
     animateCount(document.getElementById('epLeads'), 12, 'int', 1300);
     animateCount(document.getElementById('epSpeed'), 2.4, 'speed', 1300);
     animateCount(document.getElementById('epRevenue'), 2400, 'revenue', 1500);
+    animateCount(document.getElementById('epBooked'), 4, 'int', 1400);
     animateCount(document.getElementById('epStopwatch'), 2.4, 'speed', 900);
   }
 

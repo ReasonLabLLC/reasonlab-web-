@@ -16,3 +16,8 @@ Changes included:
 - FAQ now sits in a cleaner panel so the area feels less empty.
 - Final CTA is more dramatic and has stronger closing-card styling.
 - Previous hero timeline fix remains included: line stays behind the bubbles, and the hero animation runs once and stays fixed.
+
+V5 update:
+- Added a fourth Today dashboard metric: Calls booked.
+- Today card now fills the visual gap with a balanced analytics layout.
+- Dashboard animation remains one-shot and keeps final values visible.
