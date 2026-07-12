@@ -1,51 +1,49 @@
 (() => {
-  const modal = document.getElementById('demoModal');
-  const frame = document.getElementById('demoFrame');
-  const device = document.getElementById('demoDevice');
-  const loading = document.getElementById('demoLoading');
-  const title = document.getElementById('demoModalTitle');
-  const openButtons = document.querySelectorAll('.open-demo');
-  const closeButtons = document.querySelectorAll('[data-close-demo]');
-  const viewButtons = document.querySelectorAll('[data-view]');
+  const modal = document.getElementById("demoModal");
+  const frame = document.getElementById("demoFrame");
+  const device = document.getElementById("demoDevice");
+  const loading = document.getElementById("demoLoading");
+  const modalTitle = document.getElementById("demoModalTitle");
+  const openButtons = document.querySelectorAll(".demo-open");
+  const closeTargets = document.querySelectorAll("[data-close-demo]");
+  const deviceButtons = document.querySelectorAll("[data-view]");
 
   if (!modal || !frame || !device) return;
 
-  function openDemo(button) {
-    const src = button.dataset.demo;
-    const demoTitle = button.dataset.title || 'Website Demo';
+  const openDemo = (button) => {
+    loading?.classList.remove("hidden");
+    modalTitle.textContent = button.dataset.title || "Website demo";
+    frame.src = button.dataset.demo;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("demo-open");
+  };
 
-    title.textContent = demoTitle;
-    loading.classList.remove('hidden');
-    frame.src = src;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('demo-open');
-  }
+  const closeDemo = () => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    frame.src = "about:blank";
+    loading?.classList.remove("hidden");
+    document.body.classList.remove("demo-open");
+  };
 
-  function closeDemo() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    frame.src = 'about:blank';
-    loading.classList.remove('hidden');
-    document.body.classList.remove('demo-open');
-  }
+  const setDevice = (view) => {
+    const mobile = view === "mobile";
+    device.classList.toggle("mobile", mobile);
+    device.classList.toggle("desktop", !mobile);
 
-  function setView(view) {
-    device.classList.toggle('mobile', view === 'mobile');
-    device.classList.toggle('desktop', view !== 'mobile');
-
-    viewButtons.forEach((button) => {
-      button.classList.toggle('active', button.dataset.view === view);
+    deviceButtons.forEach((button) => {
+      button.classList.toggle("active", button.dataset.view === view);
     });
-  }
+  };
 
-  openButtons.forEach((button) => button.addEventListener('click', () => openDemo(button)));
-  closeButtons.forEach((button) => button.addEventListener('click', closeDemo));
-  viewButtons.forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));
+  openButtons.forEach((button) => button.addEventListener("click", () => openDemo(button)));
+  closeTargets.forEach((target) => target.addEventListener("click", closeDemo));
+  deviceButtons.forEach((button) => button.addEventListener("click", () => setDevice(button.dataset.view)));
 
-  frame.addEventListener('load', () => loading.classList.add('hidden'));
+  frame.addEventListener("load", () => loading?.classList.add("hidden"));
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modal.classList.contains('open')) closeDemo();
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("open")) closeDemo();
   });
 })();

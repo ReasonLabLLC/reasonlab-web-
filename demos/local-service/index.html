@@ -1,26 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PrimeFix Home Services — Concept Demo</title>
-<link rel="preconnect" href="https://images.unsplash.com">
-<link rel="stylesheet" href="../demo.css">
-<style>
-:root{--primary:#ff6a1a;--soft:#fff1e8;--dark:#17212b}
-body{background:#fff;color:var(--dark)}.brand{color:var(--dark)}.btn.primary{background:var(--primary);color:white}.btn.ghost{background:var(--soft);color:var(--dark)}.hero{background-image:url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=78")}.kicker,.card span{color:var(--primary)}.section.soft{background:var(--soft)}.card{box-shadow:0 12px 40px rgba(0,0,0,.05)}.accent-block{background:var(--dark);color:white;border-radius:24px;padding:40px}.accent-block p{color:rgba(255,255,255,.72)}.mini-list{display:grid;gap:12px;margin-top:24px}.mini-list div{padding:13px 0;border-bottom:1px solid rgba(255,255,255,.14)}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrimeFix Home Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header><div class="shell topbar"><a class="brand" href="#">PrimeFix Home Services</a><nav class="nav"><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></nav><div class="actions"><button class="btn ghost">Call now</button><button class="btn primary" data-scroll>Request a Quote</button></div></div></header>
-<main>
-<section class="hero"><div class="shell hero-inner"><div class="kicker">Reliable local professionals</div><h1>Home service without the hassle.</h1><p>Fast estimates, clear communication and trusted service for homeowners who need the job done right.</p><button class="btn primary" data-scroll>Request a Quote</button></div></section>
-<section class="section" id="services"><div class="shell"><p class="kicker">What we offer</p><h2>Designed around the customer experience.</h2><p class="muted">This interactive concept demonstrates the type of structure, messaging and conversion flow ReasonLab can create.</p><div class="grid"><article class="card"><span>01</span><h3>Same-day response</h3><p>Fast communication when the customer needs help now.</p></article><article class="card"><span>02</span><h3>Clear estimates</h3><p>Simple quote requests with transparent next steps.</p></article><article class="card"><span>03</span><h3>Trusted technicians</h3><p>A credibility-focused layout built around reviews and guarantees.</p></article></div></div></section>
-<section class="section soft" id="about"><div class="shell split"><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=78" alt="" loading="lazy"><div><p class="kicker">Why choose us</p><h2>A clear reason to take the next step.</h2><p class="muted">Strong websites build confidence quickly, answer key questions and make the next action feel simple.</p><div class="mini-list"><div>✓ Mobile-first experience</div><div>✓ Conversion-focused structure</div><div>✓ Analytics and lead tracking ready</div></div></div></div></section>
-<section class="section" id="contact"><div class="shell split"><div class="accent-block"><p class="kicker">Get started</p><h2>Ready to take the next step?</h2><p>Complete the short form to see how the interaction could work for a real business.</p></div><form class="form" id="demoForm"><input required placeholder="Full name"><input required type="email" placeholder="Email address"><select required><option value="">Choose a service</option><option>General inquiry</option><option>Appointment</option><option>Request a quote</option></select><button class="btn primary" type="submit">Request a Quote</button><div class="notice" id="notice">Thanks! This is a demo interaction. No information was sent.</div></form></div></section>
-</main>
-<footer class="footer"><div class="shell">Concept website created for the ReasonLab interactive showcase.</div></footer>
-<script>
-document.querySelectorAll('[data-scroll]').forEach(b=>b.addEventListener('click',()=>document.querySelector('#contact').scrollIntoView({behavior:'smooth'})));
-document.getElementById('demoForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('notice').classList.add('show')})
-</script>
-</body></html>
+  <div class="service-alert"><strong>24/7 emergency line</strong><span>Licensed · Insured · Locally operated</span><a href="tel:+14075550196">(407) 555-0196</a></div>
+  <header>
+    <a class="service-brand" href="#top">PRIME<span>FIX</span></a>
+    <nav><a href="#services">Services</a><a href="#why">Why us</a><a href="#areas">Service areas</a><a href="#reviews">Reviews</a></nav>
+    <a class="quote-link" href="#quote">Get a free estimate</a>
+  </header>
+
+  <main id="top">
+    <section class="service-hero">
+      <div class="service-hero-content">
+        <span class="badge">Trusted home service professionals</span>
+        <h1>One call.<br />The job gets done.</h1>
+        <p>Fast response, straightforward estimates and skilled technicians for repairs, maintenance and home improvement.</p>
+        <div class="service-actions"><a href="#quote">Get an estimate</a><a href="tel:+14075550196">Call now</a></div>
+        <div class="trust-row"><span>★★★★★ <b>4.9 average rating</b></span><span><b>2,400+</b> completed jobs</span><span><b>Same-day</b> availability</span></div>
+      </div>
+      <div class="service-hero-image">
+        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1500&q=78" alt="PrimeFix service professional" />
+        <div class="image-card"><strong>Need help today?</strong><span>Average response: 12 minutes</span></div>
+      </div>
+    </section>
+
+    <section id="services" class="services-section">
+      <div class="section-heading"><span>What we handle</span><h2>Home services built around speed and reliability.</h2></div>
+      <div class="services-grid">
+        <article><b>01</b><h3>Repairs & Handyman</h3><p>Drywall, fixtures, doors, mounting, minor repairs and punch-list projects.</p><a href="#quote">Request service →</a></article>
+        <article><b>02</b><h3>Cleaning Services</h3><p>Recurring cleaning, move-in/move-out, deep cleaning and turnover service.</p><a href="#quote">Request service →</a></article>
+        <article><b>03</b><h3>Exterior Care</h3><p>Pressure washing, gutters, window cleaning and light exterior maintenance.</p><a href="#quote">Request service →</a></article>
+        <article><b>04</b><h3>Emergency Support</h3><p>Priority response for urgent property issues requiring immediate attention.</p><a href="tel:+14075550196">Call emergency line →</a></article>
+      </div>
+    </section>
+
+    <section id="why" class="why-section">
+      <div class="why-photo"><img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=75" alt="Home service technician working" loading="lazy" /></div>
+      <div class="why-copy">
+        <span class="badge">Why homeowners call PrimeFix</span>
+        <h2>No vague arrival windows. No confusing estimates.</h2>
+        <div class="why-list">
+          <article><span>01</span><div><h3>Clear communication</h3><p>Appointment confirmation, technician updates and simple next steps.</p></div></article>
+          <article><span>02</span><div><h3>Verified professionals</h3><p>Experienced technicians with background checks and insured work.</p></div></article>
+          <article><span>03</span><div><h3>Work backed by a guarantee</h3><p>If something is not right, we return and make it right.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="areas" class="area-section">
+      <div><span>Serving Central Florida</span><h2>Local teams. Faster arrival.</h2><p>Orlando · Kissimmee · Lake Nona · Winter Park · Celebration · Clermont · Altamonte Springs</p></div>
+      <div class="area-map"><span>ORLANDO</span><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <section id="reviews" class="reviews-section">
+      <div class="reviews-score"><strong>4.9</strong><span>★★★★★</span><small>Based on 680 verified reviews</small></div>
+      <blockquote>“The estimate was clear, the technician arrived when promised and the repair was finished the same afternoon.”<cite>— Jordan M., Winter Park</cite></blockquote>
+      <blockquote>“PrimeFix made a long home project list feel simple. I knew exactly what was happening at every step.”<cite>— Taylor R., Orlando</cite></blockquote>
+    </section>
+
+    <section id="quote" class="quote-section">
+      <div class="quote-copy"><span>Free estimate</span><h2>Tell us what needs attention.</h2><p>Complete the quick three-step demo to see how a quote request can guide a visitor without overwhelming them.</p></div>
+      <div class="quote-box">
+        <div class="quote-progress"><i class="active"></i><i></i><i></i></div>
+        <form id="quoteForm">
+          <div class="quote-step active" data-step="1">
+            <label>What type of help do you need?</label>
+            <div class="service-options">
+              <button type="button" data-value="Handyman">Handyman</button>
+              <button type="button" data-value="Cleaning">Cleaning</button>
+              <button type="button" data-value="Exterior">Exterior care</button>
+              <button type="button" data-value="Emergency">Emergency</button>
+            </div>
+            <button class="next-button" type="button">Continue</button>
+          </div>
+          <div class="quote-step" data-step="2">
+            <label>Your service ZIP code</label>
+            <input id="zipInput" inputmode="numeric" maxlength="5" placeholder="32801" required />
+            <button class="next-button" type="button">Continue</button>
+          </div>
+          <div class="quote-step" data-step="3">
+            <label>Where should we send the estimate?</label>
+            <input type="text" placeholder="Full name" required />
+            <input type="email" placeholder="Email address" required />
+            <button class="submit-button" type="submit">Request my estimate</button>
+          </div>
+        </form>
+        <div id="quoteSuccess" class="quote-success"><strong>Request received.</strong><span>This is a concept demo. No information was sent.</span></div>
+      </div>
+    </section>
+  </main>
+  <footer><strong>PRIME<span>FIX</span></strong><small>Concept website by ReasonLab</small></footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,26 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Savoria Kitchen — Concept Demo</title>
-<link rel="preconnect" href="https://images.unsplash.com">
-<link rel="stylesheet" href="../demo.css">
-<style>
-:root{--primary:#a94725;--soft:#f5ece5;--dark:#211510}
-body{background:#fff;color:var(--dark)}.brand{color:var(--dark)}.btn.primary{background:var(--primary);color:white}.btn.ghost{background:var(--soft);color:var(--dark)}.hero{background-image:url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=78")}.kicker,.card span{color:var(--primary)}.section.soft{background:var(--soft)}.card{box-shadow:0 12px 40px rgba(0,0,0,.05)}.accent-block{background:var(--dark);color:white;border-radius:24px;padding:40px}.accent-block p{color:rgba(255,255,255,.72)}.mini-list{display:grid;gap:12px;margin-top:24px}.mini-list div{padding:13px 0;border-bottom:1px solid rgba(255,255,255,.14)}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savoria Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header><div class="shell topbar"><a class="brand" href="#">Savoria Kitchen</a><nav class="nav"><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></nav><div class="actions"><button class="btn ghost">Call now</button><button class="btn primary" data-scroll>Reserve a Table</button></div></div></header>
-<main>
-<section class="hero"><div class="shell hero-inner"><div class="kicker">Seasonal dining · Downtown</div><h1>An evening worth remembering.</h1><p>Seasonal ingredients, thoughtful hospitality and a dining room designed for memorable moments.</p><button class="btn primary" data-scroll>Reserve a Table</button></div></section>
-<section class="section" id="services"><div class="shell"><p class="kicker">What we offer</p><h2>Designed around the customer experience.</h2><p class="muted">This interactive concept demonstrates the type of structure, messaging and conversion flow ReasonLab can create.</p><div class="grid"><article class="card"><span>01</span><h3>Dinner Menu</h3><p>Seasonal dishes, signature plates and carefully selected ingredients.</p></article><article class="card"><span>02</span><h3>Reservations</h3><p>A simple booking experience for dinner, celebrations and private dining.</p></article><article class="card"><span>03</span><h3>Private Events</h3><p>Flexible experiences for intimate gatherings and company events.</p></article></div></div></section>
-<section class="section soft" id="about"><div class="shell split"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=78" alt="" loading="lazy"><div><p class="kicker">Why choose us</p><h2>A clear reason to take the next step.</h2><p class="muted">Strong websites build confidence quickly, answer key questions and make the next action feel simple.</p><div class="mini-list"><div>✓ Mobile-first experience</div><div>✓ Conversion-focused structure</div><div>✓ Analytics and lead tracking ready</div></div></div></div></section>
-<section class="section" id="contact"><div class="shell split"><div class="accent-block"><p class="kicker">Get started</p><h2>Ready to take the next step?</h2><p>Complete the short form to see how the interaction could work for a real business.</p></div><form class="form" id="demoForm"><input required placeholder="Full name"><input required type="email" placeholder="Email address"><select required><option value="">Choose a service</option><option>General inquiry</option><option>Appointment</option><option>Request a quote</option></select><button class="btn primary" type="submit">Reserve a Table</button><div class="notice" id="notice">Thanks! This is a demo interaction. No information was sent.</div></form></div></section>
-</main>
-<footer class="footer"><div class="shell">Concept website created for the ReasonLab interactive showcase.</div></footer>
-<script>
-document.querySelectorAll('[data-scroll]').forEach(b=>b.addEventListener('click',()=>document.querySelector('#contact').scrollIntoView({behavior:'smooth'})));
-document.getElementById('demoForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('notice').classList.add('show')})
-</script>
-</body></html>
+  <div class="announcement">Dinner Tuesday–Sunday · Reservations now open</div>
+  <header>
+    <a class="wordmark" href="#home">Savoria</a>
+    <nav>
+      <a href="#story">Our story</a>
+      <a href="#menu">Menu</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <a class="header-action" href="#reserve">Reserve a table</a>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-photo">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1500&q=78" alt="Seasonal restaurant plate" />
+        <span>Downtown Orlando</span>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">Seasonal dining · Thoughtful hospitality</p>
+        <h1>Food that feels familiar, made unforgettable.</h1>
+        <p class="hero-description">A neighborhood dining room inspired by market ingredients, open-fire cooking and long evenings around the table.</p>
+        <div class="hero-actions">
+          <a href="#menu" class="button button-dark">View the menu</a>
+          <a href="#reserve" class="button button-line">Reserve</a>
+        </div>
+        <div class="hero-hours">
+          <div><small>Tuesday–Thursday</small><strong>5:00–10:00 PM</strong></div>
+          <div><small>Friday–Sunday</small><strong>5:00–11:00 PM</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="story">
+      <p class="vertical-note">The Savoria experience</p>
+      <div>
+        <span class="eyebrow">Our approach</span>
+        <h2>We cook with the season, not against it.</h2>
+      </div>
+      <p>Our menu changes with what is at its best. Local produce, responsibly sourced seafood and carefully selected meats shape a concise menu built for sharing.</p>
+    </section>
+
+    <section id="menu" class="menu-section">
+      <div class="menu-heading">
+        <div>
+          <span class="eyebrow">Tonight at Savoria</span>
+          <h2>The menu</h2>
+        </div>
+        <div class="menu-tabs" role="tablist">
+          <button class="active" data-menu="starters">Starters</button>
+          <button data-menu="mains">Mains</button>
+          <button data-menu="desserts">Desserts</button>
+        </div>
+      </div>
+
+      <div class="menu-layout">
+        <div class="menu-photo">
+          <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=1000&q=76" alt="Dish at Savoria Kitchen" loading="lazy" />
+        </div>
+        <div class="menu-list" id="menuList"></div>
+      </div>
+    </section>
+
+    <section class="experience">
+      <div class="experience-image">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=74" alt="Warm restaurant dining room" loading="lazy" />
+      </div>
+      <div class="experience-copy">
+        <span class="eyebrow">Private dining</span>
+        <h2>A table for the moments that matter.</h2>
+        <p>Host an intimate dinner, company gathering or celebration with a seasonal family-style menu.</p>
+        <a href="#reserve">Plan a private event →</a>
+      </div>
+    </section>
+
+    <section id="reserve" class="reservation">
+      <div>
+        <span class="eyebrow">Reserve your table</span>
+        <h2>Join us for dinner.</h2>
+        <p>Select a date, party size and preferred time. This is an interactive concept and does not submit real information.</p>
+      </div>
+      <form id="reservationForm">
+        <label>Date<input type="date" required /></label>
+        <label>Guests<select required><option value="">Party size</option><option>2 guests</option><option>3 guests</option><option>4 guests</option><option>5+ guests</option></select></label>
+        <label>Time<select required><option value="">Preferred time</option><option>5:30 PM</option><option>6:45 PM</option><option>8:00 PM</option><option>9:15 PM</option></select></label>
+        <button type="submit">Find a table</button>
+        <p id="reservationMessage" class="form-message">A table has been held for this concept demo.</p>
+      </form>
+    </section>
+
+    <section id="visit" class="visit">
+      <div><span class="eyebrow">Visit</span><h2>184 Market Street<br />Orlando, Florida</h2></div>
+      <div><small>Phone</small><strong>(407) 555-0184</strong><small>Parking</small><strong>Valet available after 5 PM</strong></div>
+      <div><small>Follow</small><strong>Instagram · Facebook</strong><small>Dress</small><strong>Relaxed evening attire</strong></div>
+    </section>
+  </main>
+
+  <footer><span>Savoria Kitchen</span><small>Concept website by ReasonLab</small></footer>
+  <script src="app.js"></script>
+</body>
+</html>
