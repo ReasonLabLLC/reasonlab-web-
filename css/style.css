@@ -903,3 +903,15 @@ main > section:not(.hero):not(.book-hero)::after {
     opacity:.9;
   }
 }
+
+/* ===== PERFORMANCE OPTIMIZATIONS (visual-safe) ===== */
+@supports (content-visibility:auto){
+  #services,#process,#systems,#analyzer,#faq,.cta,footer{
+    content-visibility:auto;
+    contain-intrinsic-size:1px 820px;
+  }
+}
+@media(max-width:760px){
+  #node-canvas{opacity:.68}
+  .hero::before,.book-hero::before{filter:blur(10px)}
+}

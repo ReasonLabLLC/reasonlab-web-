@@ -131,24 +131,30 @@ if ('IntersectionObserver' in window && revealEls.length) {
   const canvas = document.getElementById('node-canvas');
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
 
+  const isMobile = window.matchMedia('(max-width: 760px)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0;
   let height = 0;
   let points = [];
   let animationId = null;
+  let lastFrame = 0;
+  const frameInterval = isMobile ? 1000 / 24 : 1000 / 40;
 
   function resize() {
     width = canvas.offsetWidth || window.innerWidth;
     height = canvas.offsetHeight || 720;
-    const ratio = window.devicePixelRatio || 1;
+    const ratio = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5);
 
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-    const count = Math.max(28, Math.floor(width / 42));
+    const count = isMobile
+      ? Math.max(16, Math.floor(width / 34))
+      : Math.max(24, Math.floor(width / 50));
 
     points = Array.from({ length: count }, () => ({
       x: Math.random() * width,
@@ -162,7 +168,7 @@ if ('IntersectionObserver' in window && revealEls.length) {
     }));
   }
 
-  function draw() {
+  function paint() {
     ctx.clearRect(0, 0, width, height);
 
     points.forEach((p, i) => {
@@ -182,14 +188,16 @@ if ('IntersectionObserver' in window && revealEls.length) {
         const q = points[j];
         const dx = p.x - q.x;
         const dy = p.y - q.y;
-        const d = Math.sqrt(dx * dx + dy * dy);
+        const distanceSquared = dx * dx + dy * dy;
+        const maxDistance = isMobile ? 130 : 155;
 
-        if (d < 155) {
+        if (distanceSquared < maxDistance * maxDistance) {
+          const distance = Math.sqrt(distanceSquared);
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(q.x, q.y);
           ctx.strokeStyle = 'rgba(245,245,247,.16)';
-          ctx.globalAlpha = 1 - d / 155;
+          ctx.globalAlpha = 1 - distance / maxDistance;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -197,13 +205,27 @@ if ('IntersectionObserver' in window && revealEls.length) {
     });
 
     ctx.globalAlpha = 1;
+  }
+
+  function draw(timestamp) {
+    if (!document.hidden && timestamp - lastFrame >= frameInterval) {
+      lastFrame = timestamp;
+      paint();
+    }
     animationId = requestAnimationFrame(draw);
   }
 
   resize();
-  draw();
+  paint();
 
-  window.addEventListener('resize', resize);
+  if (!reduceMotion) animationId = requestAnimationFrame(draw);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(resize, 160);
+  }, { passive: true });
+
   window.addEventListener('beforeunload', () => {
     if (animationId) cancelAnimationFrame(animationId);
   });
@@ -309,8 +331,29 @@ if ('IntersectionObserver' in window && revealEls.length) {
     runStopwatch();
   }
 
+  let engineTimer = null;
+
+  function scheduleEngineAnimation() {
+    window.clearTimeout(engineTimer);
+    if (document.hidden) return;
+    engineTimer = window.setTimeout(() => {
+      playEngineAnimation();
+      scheduleEngineAnimation();
+    }, 6000);
+  }
+
   playEngineAnimation();
-  window.setInterval(playEngineAnimation, 6000);
+  scheduleEngineAnimation();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      window.clearTimeout(engineTimer);
+      clearAnimationTimers();
+    } else {
+      playEngineAnimation();
+      scheduleEngineAnimation();
+    }
+  });
 })();
 
 // ---------- FAQ ----------
