@@ -24,6 +24,23 @@ function setValueIfEmpty(id, value) {
   if (el && value && !el.value) el.value = value;
 }
 
+function storageGet(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function storageSet(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function postToFormspree(payload) {
   return fetch(FORM_ENDPOINT, {
     method: 'POST',
@@ -36,10 +53,10 @@ function postToFormspree(payload) {
 }
 
 function leadSessionId() {
-  let id = localStorage.getItem('reasonlab_lead_session_id');
+  let id = storageGet('reasonlab_lead_session_id');
   if (!id) {
     id = `reasonlab-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-    localStorage.setItem('reasonlab_lead_session_id', id);
+    storageSet('reasonlab_lead_session_id', id);
   }
   return id;
 }
@@ -66,7 +83,7 @@ function readAnalyzerData() {
 
 function saveAnalyzerData() {
   const data = readAnalyzerData();
-  localStorage.setItem('reasonlab_analyzer', JSON.stringify(data));
+  storageSet('reasonlab_analyzer', JSON.stringify(data));
   return data;
 }
 
@@ -197,34 +214,29 @@ if ('IntersectionObserver' in window && revealEls.length) {
   const timeline = document.getElementById('epTimeline');
   if (!timeline) return;
 
-  const line = document.getElementById('epLine');
   const steps = Array.from(timeline.querySelectorAll('.ep-step'));
+  const chips = Array.from(document.querySelectorAll('.ep-manual-chip'));
+  const animationTimers = [];
+
+  function clearAnimationTimers() {
+    animationTimers.splice(0).forEach(timer => window.clearTimeout(timer));
+  }
+
+  function schedule(callback, delay) {
+    animationTimers.push(window.setTimeout(callback, delay));
+  }
 
   function playTimeline() {
     steps.forEach(step => step.classList.remove('show'));
+    timeline.classList.remove('timeline-ready');
 
-    if (line) {
-      line.style.transition = 'none';
-      line.style.height = '0px';
-      void line.offsetHeight;
-    }
+    // Force the pseudo-element line and the steps to restart cleanly.
+    void timeline.offsetHeight;
+    timeline.classList.add('timeline-ready');
 
-    let index = 0;
-
-    const interval = window.setInterval(() => {
-      if (index < steps.length) {
-        steps[index].classList.add('show');
-
-        if (line) {
-          line.style.transition = 'height .5s linear';
-          line.style.height = `${index * 37}px`;
-        }
-
-        index += 1;
-      } else {
-        window.clearInterval(interval);
-      }
-    }, 420);
+    steps.forEach((step, index) => {
+      schedule(() => step.classList.add('show'), 260 + index * 360);
+    });
   }
 
   function animateCount(element, target, mode, duration) {
@@ -252,10 +264,21 @@ if ('IntersectionObserver' in window && revealEls.length) {
     requestAnimationFrame(step);
   }
 
+  function playManualTasks() {
+    chips.forEach(chip => chip.classList.remove('show'));
+    void timeline.offsetHeight;
+
+    chips.forEach((chip, index) => {
+      schedule(() => chip.classList.add('show'), 820 + index * 240);
+    });
+  }
+
   function runDashboard() {
     animateCount(document.getElementById('epLeads'), 12, 'int', 1400);
     animateCount(document.getElementById('epSpeed'), 2.4, 'speed', 1400);
     animateCount(document.getElementById('epRevenue'), 2400, 'revenue', 1600);
+    animateCount(document.getElementById('epManualTasks'), 18, 'int', 1500);
+    playManualTasks();
   }
 
   function runStopwatch() {
@@ -280,6 +303,7 @@ if ('IntersectionObserver' in window && revealEls.length) {
   }
 
   function playEngineAnimation() {
+    clearAnimationTimers();
     playTimeline();
     runDashboard();
     runStopwatch();
@@ -383,7 +407,7 @@ document.addEventListener('click', event => {
   const form = document.getElementById('bookingForm');
   if (!form) return;
 
-  const saved = localStorage.getItem('reasonlab_analyzer');
+  const saved = storageGet('reasonlab_analyzer');
   if (!saved) return;
 
   let data;
@@ -411,7 +435,7 @@ document.addEventListener('click', event => {
   const sessionId = leadSessionId();
   const partialKey = `reasonlab_partial_lead_sent_${sessionId}`;
 
-  let partialSent = localStorage.getItem(partialKey) === 'true';
+  let partialSent = storageGet(partialKey) === 'true';
   let partialTimer = null;
 
   function getBookingData() {
@@ -468,7 +492,7 @@ document.addEventListener('click', event => {
     if (!data.name || !isValidEmail(data.email)) return;
 
     partialSent = true;
-    localStorage.setItem(partialKey, 'true');
+    storageSet(partialKey, 'true');
 
     try {
       await postToFormspree({
